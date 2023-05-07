@@ -219,13 +219,76 @@
         <summary @click="open=!open">TK-MEDIA</summary>
         <div class="effect-fade" :hide="!open">
           <div x-show="open" x-collapse>
-            <div x-data="{open:true}" :open="open">
+            <div x-data="{open:true, w:1, h:1, portrait:false, auto:false, skeleton:false}" :open="open">
               <div class="subject" @click="open=!open">
-                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
+                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">圖片</span></tk-icon>
               </div>
               <div class="effect-fade" :hide="!open">
+                <div class="flex flex:wrap ai:center gap:4x py:1x">
+                  <div class="inline-flex center-content">
+                    <span>ratio:</span>
+                    <div class="input inline-flex w:100 h:3x!">
+                      <input type="number" placeholder="寬" x-model.number.debounce="w" />
+                      <span>/</span>
+                      <input type="number" placeholder="高" x-model.number.debounce="h" />
+                    </div>
+                  </div>
+                  <tk-checkbox-group>
+                    <tk-checkbox @change="portrait=$event.detail.checked">portrait</tk-checkbox>
+                    <tk-checkbox @change="auto=$event.detail.checked">auto</tk-checkbox>
+                    <tk-checkbox @change="skeleton=$event.detail.checked">skeleton</tk-checkbox>
+                  </tk-checkbox-group>
+                </div>
                 <div x-show="open" x-collapse>
-                  <tk-media img="https://fakeimg.pl/300/"></tk-media>
+                  <div class="flex flex:wrap gap:1x {max-w:150;bg:G-50/.2}_tk-media">
+                    <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" img="https://fakeimg.pl/150/"></tk-media>
+                    <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" img="https://fakeimg.pl/150x200/"></tk-media>
+                    <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" img="https://fakeimg.pl/200x150/"></tk-media>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              x-data="{
+                open:true,
+                w:16, h:9, portrait:false, auto:false, skeleton:false,
+                img:null,
+                video:'https://www.youtube.com/watch?v=KZbswFDOOsY'
+              }"
+              :open="open"
+            >
+              <div class="subject" @click="open=!open">
+                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">影片</span></tk-icon>
+              </div>
+              <div class="effect-fade" :hide="!open">
+                <div class="flex flex:wrap ai:center gap:4x py:1x">
+                  <div class="inline-flex center-content">
+                    <span>ratio:</span>
+                    <div class="input inline-flex w:100 h:3x!">
+                      <input type="number" placeholder="寬" x-model.number.debounce="w" />
+                      <span>/</span>
+                      <input type="number" placeholder="高" x-model.number.debounce="h" />
+                    </div>
+                  </div>
+                  <tk-checkbox-group>
+                    <tk-checkbox @change="portrait=$event.detail.checked">portrait</tk-checkbox>
+                    <tk-checkbox @change="auto=$event.detail.checked">auto</tk-checkbox>
+                    <tk-checkbox @change="skeleton=$event.detail.checked">skeleton</tk-checkbox>
+                  </tk-checkbox-group>
+                  <div>
+                    <div class="inline-flex center-content">
+                      <span>自訂封面:</span>
+                      <div class="input w:300 h:3x!">
+                        <input type="text" placeholder="圖片連結" x-model.debounce="img" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div x-show="open" x-collapse>
+                  <div class="flex flex:wrap gap:1x {max-w:600;bg:G-50/.2}_tk-media">
+                    <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" :img="img" :video="video"></tk-media>
+                  </div>
                 </div>
               </div>
             </div>

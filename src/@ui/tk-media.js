@@ -41,6 +41,7 @@ export default class TkMedia extends LitElement {
     ratio: { type: String, reflect: true },
     auto: { type: Boolean },
     portrait: { type: Boolean },
+    skeleton: { type: Boolean },
 
     htmlType: { type: String, attribute: 'html-type' },
     href: { type: String },
@@ -101,7 +102,7 @@ export default class TkMedia extends LitElement {
         class=${Object.values({
           main: 'media',
           ratio: `$w:${w} $h:${h}`,
-          skeleton: !this._loaded ? 'skeleton' : '',
+          skeleton: this.skeleton || !this._loaded ? 'skeleton' : '',
           portrait: this._portrait ? 'portrait' : '',
           coverBg: this._ytID ? '$skeleton-bg:black' : '',
           keepCover: this._loadingVideo ? '{opacity:1!;visible!}_img' : '',
@@ -177,7 +178,7 @@ export default class TkMedia extends LitElement {
     if (changedProperties.has('imgSrc') && this.imgSrc) {
       imgSrc = this.imgSrc;
     }
-    if (changedProperties.has('videoSrc') && this.videoSrc) {
+    if ((changedProperties.has('videoSrc') && this.videoSrc) || !this.imgSrc) {
       this._loadingVideo = false;
       this._ytID = this.getYtID(this.videoSrc);
       this._coverSrc = `https://i.ytimg.com/vi/${this._ytID}/hqdefault.jpg`;

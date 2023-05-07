@@ -1,6 +1,7 @@
 {
-  "name": "mastercss",
-  "version": "1.0.0",
+  "name": "TK-UI-DEMO",
+  "version": "0.0.0",
+  "private": true,
   "description": "",
   "main": "index.html",
   "scripts": {
@@ -9,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codesandbox-app/static-template.git"
+    "url": "git+https://github.com/zhongyoulu/TK-UI-DEMO.git"
   },
   "keywords": [],
-  "author": "Ives van Hoorne",
+  "author": "Alan Lu<https://github.com/zhongyoulu>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/codesandbox-app/static-template/issues"
+    "url": "https://github.com/zhongyoulu/TK-UI-DEMO/issues"
   },
-  "homepage": "https://github.com/codesandbox-app/static-template#readme",
+  "homepage": "https://github.com/zhongyoulu/TK-UI-DEMO#readme",
   "devDependencies": {
     "serve": "^11.2.0"
   }

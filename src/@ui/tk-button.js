@@ -11,7 +11,7 @@ const cls = {
       t:center vertical-align:middle
       text-transform:inherit text:none white-space:nowrap
       b:1|solid|$(border,G-50)
-      ~.3s transition-property:color,background,border-color,box-shadow
+      ~.2s transition-property:color,background,border-color,box-shadow
       pointer outline:none
       pointer-events:all
       untouchable>*
@@ -21,7 +21,7 @@ const cls = {
       {opacity:.6;cursor:not-allowed;}:is([disabled],[readonly],[loading])
       {bg:B-50/.1}:not([class*="btn-type--"])[disabled]
 
-      {content:'';untouchable;abs;full;middle;center;bg:$(fg,theme);opacity:0;~opacity|.3s}::before
+      {content:'';untouchable;abs;full;middle;center;bg:$(fg,theme);opacity:0;~opacity|.2s}::before
       {opacity:.1}:not([disabled]):active::before
 
       :host(:empty)_{p:1x}
@@ -29,8 +29,8 @@ const cls = {
     '-ripple': cssLiteral.$`
       {content:'';untouchable;abs;full;top:$(y,50%);left:$(x,50%);bg:no-repeat;bg:center}::after
       {bg:theme;bg:radial-gradient(circle,bg|10%,transparent|10.01%)}::after
-      {transform:translate(-50%,-50%)|scale(10);opacity:0;~transform|.3s,opacity|.8s}::after
-      {transform:translate(-50%,-50%)|scale(0);opacity:.3;~0s}:not([disabled]):active::after
+      {transform:translate(-50%,-50%)|scale(10);opacity:0;~transform|.2s,opacity|.8s}::after
+      {transform:translate(-50%,-50%)|scale(0);opacity:.3;~none}:not([disabled]):active::after
     `,
     '-noborder': cssLiteral.$`
       b:0 p:calc(.5x+1)|calc(1x+1)!

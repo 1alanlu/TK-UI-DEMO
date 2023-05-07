@@ -17,13 +17,12 @@ if (!messageContent) {
 const cls = {
   message: {
     '': cssLiteral.$`
-      inline-flex jc:center ai:center p:1x r:4
+      inline-flex jc:center ai:center p:1x r:.5x
       max-w:xs@md
       f:14 fg:fg word-break:break-all
       bg:bg-box
       shadow:md
-      transition-property:opacity,transform
-      ~.3s|cubic-bezier(.645,.045,.355,1)
+      ~.2s|cubic-bezier(.645,.045,.355,1) transition-property:opacity,transform
       opacity:0 translateY(-100%)
       {opacity:1;translateY(0)}[show],:hover
       pointer-events:all

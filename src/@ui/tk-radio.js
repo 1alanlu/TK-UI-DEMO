@@ -11,7 +11,7 @@ const cls = {
       box:border rel
       flex center-content round
       w:1em h:1em
-      ~.3s
+      ~.2s
       :not([disabled]):hover_{z:1}
       {z:-1;box:border;content:'';abs;full;round;bg:$(theme)}::before
       {opacity:.2;scale(0);~.2s|cubic-bezier(.12,.4,.29,1.46)|.1s}::before
@@ -135,7 +135,10 @@ export class TkRadioGroup extends LitElement {
       opacity: 0.6;
     }
     ::slotted(tk-radio) {
-      transition: opacity 0.3s;
+      transition: opacity 0.2s;
+    }
+    ::slotted(tk-radio:not(:first-child)) {
+      margin-left: 8px;
     }
   `;
   static properties = {

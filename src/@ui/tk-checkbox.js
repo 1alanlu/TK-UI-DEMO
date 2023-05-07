@@ -9,9 +9,9 @@ const cls = {
   checked: {
     '': cssLiteral.$`
       box:border rel
-      flex center-content r:4
+      flex center-content r:.5x
       w:1em h:1em
-      ~.3s
+      ~.2s
       :not([disabled]):hover_{z:1}
 
       {scale(0);fg:W-50;~.2s|cubic-bezier(.12,.4,.29,1.46)|.1s}>tk-icon
@@ -121,7 +121,10 @@ export class TkCheckboxGroup extends LitElement {
       opacity: 0.6;
     }
     ::slotted(tk-checkbox) {
-      transition: opacity 0.3s;
+      transition: opacity 0.2s;
+    }
+    ::slotted(tk-checkbox:not(:first-child)) {
+      margin-left: ${unsafeCSS(window.masterCSSConfig.values['1x']+'px')};
     }
   `;
   static properties = {

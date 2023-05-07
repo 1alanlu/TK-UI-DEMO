@@ -115,22 +115,29 @@
     form.submit();
   }
 
-  function getTemplate(wrap, url, func) {
-    fetch(url)
-      .then((response) => response.text())
-      .then((template) => {
-        const html = new DOMParser().parseFromString(template, 'text/html');
-        // const scripts = html.head.querySelectorAll('script');
-        // scripts.forEach((script) => wrap.append(script));
-        const styles = html.head.querySelectorAll('style, link');
-        styles.forEach((style) => wrap.append(style));
-        const components = html.body.childNodes;
-        [...components].forEach((component) => {
-          wrap.appendChild(component);
-        });
+  async function getTemplate(wrap, url, func) {
+    const template = await getText(url);
+    setTemplate(wrap, template);
+    func && typeof func === 'function' && func();
+  }
 
-        func && typeof func === 'function' && func();
-      });
+  async function getText(url) {
+    return await fetch(url).then((response) => response.text());
+  }
+  function setTemplate(wrap, template, js = false, style = true) {
+    const html = new DOMParser().parseFromString(template, 'text/html');
+    if (js) {
+      const scripts = html.head.querySelectorAll('script');
+      scripts.forEach((script) => wrap.append(script));
+    }
+    if (style) {
+      const styles = html.head.querySelectorAll('style, link');
+      styles.forEach((style) => wrap.append(style));
+    }
+    const components = html.body.childNodes;
+    [...components].forEach((component) => {
+      wrap.appendChild(component);
+    });
   }
 
   const url = {
@@ -157,6 +164,8 @@
     queryString2Obj,
     postToURL,
     getTemplate,
+    getText,
+    setTemplate,
     url,
   };
 });

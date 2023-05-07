@@ -29,7 +29,7 @@ export class TkIcon extends LitElement {
     return html`
       <div
         class=${Object.values({
-          main: 'flex center-content f:inherit',
+          main: 'flex center-content f:inherit min-w:2x min-h:2x',
           gap: ':host(:not(:empty))_{gap:1x}',
           cls: unsafeCSS(this.cls || ''),
         }).join(' ')}

@@ -12,17 +12,17 @@ const cls = {
       overflow-x:hidden overflow-y:auto outline:none
       bg:B-50/.3
       opacity:0 invisible
-      ~.3s|ease-in transition-property:opacity,visibility
+      ~.2s|ease-out transition-property:opacity,visibility
       {opacity:1;visible}[open]
     `,
     dialog: cssLiteral.$`
-      flex rel m:auto p:2x r:4
-      min-w:3xs@>2xs
-      w:full@<=2xs
+      flex rel m:auto p:2x r:.5x
+      min-w:3xs@2xs
+      w:full@<2xs
       bg:bg-box
       shadow:xl
       transition-property:opacity,transform
-      ~.3s|cubic-bezier(.645,.045,.355,1)
+      ~.2s|cubic-bezier(.645,.045,.355,1)
       opacity:0 scale(.5)
       [open]_{opacity:1;scale(1)}
       [open].modal--static>{scale(1.02)}

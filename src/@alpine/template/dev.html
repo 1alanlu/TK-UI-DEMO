@@ -1,7 +1,7 @@
 <!-- 網格 -->
-<div class="hide[hide] z:devPanel fixed! top:0 abs-center-X w:lg w:375@<=375 mx:auto untouchable" :hide="!show" x-data="{ show: false }" @keyup.shift.g.window="show = !show">
+<div class="hide[hide] z:devPanel fixed! top:0 abs-center-x w:lg w:375@<=375 mx:auto untouchable" :hide="!show" x-data="{ show: false }" @keyup.shift.g.window="show = !show">
   <div class="px:85 px:16@<=375">
-    <div class="h:100vh grid-cols:12 gap:30 {gap:16;grid-cols:4;grid-col-span:3}@<=375 {bg:theme/.05;t:center}>div">
+    <div class="h:100vh grid-cols:12 gap:30 {gap:16;grid-cols:4;grid-col-span:3}@<=375 {bg:theme/.1;t:center}>div">
       <template x-for="i in 12">
         <div></div>
       </template>
@@ -16,37 +16,50 @@
   :hide="!show"
   :open="open"
   :class="Object.values({
-    'main': 'hide[hide] z:devPanel fixed left:0 bottom:0 w:full bg:bg shadow:0|0|10|B-50/.1 ~opacity|.3s opacity:.5 opacity:0.9[open] opacity:1:hover',
-    'window': '{block!;rel;shadow:none}[window] {hide}[window]_#devPanel-switch {max-h:unset}[window]_#devPanel-content',
+    'main': 'hide[hide] z:devPanel fixed! left:0 bottom:0 w:full bg:bg shadow:0|0|10|B-50/.1 ~opacity|.2s opacity:.5 opacity:0.9[open] opacity:1:hover',
+    'window': '{block!;rel!;shadow:none}[window] {hide}[window]_#devPanel-switch {min-h:0;max-h:unset}[window]_#devPanel-content',
   }).join(' ')"
   @keyup.alt.slash.window="show = !show"
+  class="accordion"
+  x-id="['accordion']"
 >
-  <!-- devPanel-switch -->
-  <div id="devPanel-switch" class="p:1x t:center pointer" @click="open=!open">
-    <tk-icon type="arrow" :flag="+open"><span x-text="open?'隱藏':'展開'" slot="pre"></span></tk-icon>
-
-    <div class="abs top:0 right:0 p:1x bg:G-20 f:bold fg:danger">
-      <span>DEV測試用 (alt+/)</span>
+  <input type="checkbox" :id="$id('accordion')" checked />
+  <label :for="$id('accordion')">
+    <!-- devPanel-switch -->
+    <div id="devPanel-switch" class="p:1x t:center pointer" @click="open=!open">
+      <div class="flex center-content">
+        <span>儀錶板</span>
+        <tk-icon type="arrow" :flag="0"></tk-icon>
+      </div>
+      <div class="abs top:0 right:0 p:1x bg:G-20 f:bold fg:danger">
+        <span>DEV測試用 (alt+/)</span>
+      </div>
     </div>
-  </div>
-  <!-- devPanel-content -->
-  <div id="devPanel-content" class="max-h:40vh overflow:auto scrollbar">
-    <div x-show="open" x-collapse>
+    <!-- devPanel-content -->
+  </label>
+
+  <div class="accordion-content">
+    <div id="devPanel-content" class="max-h:40vh overflow:auto scrollbar">
       <div class="grid-cols:1 grid-cols:3@xs {p:1x}>section">
         <section>
-          <div class="h:150">
-            設定1
-          </div>
+          <div class="text:center">section-settings</div>
+          <template x-for="[section, settings] in Object.entries(alpineHost.sections)" :key="section">
+            <div class="field">
+              <p>
+                <span x-text="section"></span>
+                <tk-checkbox-group>
+                  <tk-checkbox :checked="settings.open" @change="settings.open=$event.detail.checked">open</tk-checkbox>
+                  <tk-checkbox :checked="settings.hide" @change="settings.hide=$event.detail.checked">hide</tk-checkbox>
+                </tk-checkbox-group>
+              </p>
+            </div>
+          </template>
         </section>
         <section>
-          <div class="h:150">
-            設定2
-          </div>
+          <div class="text:center">設定2</div>
         </section>
         <section>
-          <div class="h:150">
-            設定3
-          </div>
+          <div class="text:center">設定3</div>
         </section>
       </div>
     </div>

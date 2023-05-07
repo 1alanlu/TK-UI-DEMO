@@ -15,8 +15,7 @@ const cls = {
       {w:full;h:auto}
       .portrait_{w:auto;h:full}
       untouchable
-      transition-property:opacity,visibility
-      ~200ms|ease-in
+      ~.2s transition-property:opacity,visibility
       .skeleton_{opacity:0;invisible}
       hide[hide]
     `,
@@ -121,7 +120,7 @@ export default class TkMedia extends LitElement {
             <div
               class=${Object.values({
                 main: 'rel full pb:100% round bg:B-30 pointer',
-                opacity: '~opacity|.3s opacity:.5 opacity:.7:hover opacity:.9:active',
+                opacity: '~opacity|.2s opacity:.5 opacity:.7:hover opacity:.9:active',
                 before: "{content:'';abs-center;round;w:80%;h:80%;b:3|solid|W-50}::before",
                 after: "{content:'';abs-full;full;bg:W-50;clip:polygon(67%|50%,38%|34%,38%|66%)}::after",
               }).join(' ')}

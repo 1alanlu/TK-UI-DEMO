@@ -1,0 +1,27 @@
+<section class="accordion card hide[hide]" x-id="['accordion']" :hide="sections['tk-button'].hide">
+  <input type="checkbox" :id="$id('accordion')" x-model="sections['tk-button'].open" @change="sections['tk-button'].open=$el.checked" />
+  <label class="accordion-title" :for="$id('accordion')">TK-BUTTON</label>
+  <div class="accordion-content">
+    <div class="min-h:0">
+      <div class="accordion" x-id="['accordion']">
+        <input type="checkbox" :id="$id('accordion')" checked />
+        <label class="subject" :for="$id('accordion')">
+          <div class="flex center-content">
+            <span>BASIC</span>
+            <tk-icon type="arrow" :flag="0"></tk-icon>
+          </div>
+        </label>
+        <div class="accordion-content">
+          <div class="min-h:0">
+            <tk-button>default</tk-button>
+            <tk-button type="theme">theme</tk-button>
+            <tk-button type="dashed">dashed</tk-button>
+            <tk-button type="flat">flat</tk-button>
+            <tk-button type="outline">outline</tk-button>
+            <tk-button type="font">font</tk-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -82,10 +82,11 @@ export default class TkMedia extends LitElement {
         target="${!this.href || this.href[0] === '#' || !this.target ? nothing : this.target}"
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
-      >
+        >
         ${this.renderContent()}
         <slot></slot>
       </${tag}>
+      <div class="hide @shimmer|2s|infinite">fix keyframes</div>
     `;
   }
   renderContent() {

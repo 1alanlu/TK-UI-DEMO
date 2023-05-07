@@ -306,17 +306,20 @@
     },
     skeleton: {
       '': literal.$`
-        rel overflow:hidden user-select:none
-        bg:$(skeleton-bg,transparent)
-        {content:'_';invisible}:is(.skeleton--text):before
-        {content:'';abs-full;bg:gradient(90deg,rgba(112,112,112,0)|0%,rgba(62,62,62,0.2)|20%,rgba(62,62,62,0.5)|60%,rgba(12,12,12,0));translateX(-100%);@shimmer|2s|infinite}::after
+      rel overflow:hidden user-select:none
+      bg:$(skeleton-bg,transparent)
+      {content:'_';invisible}:is(.skeleton--text):before
+      {content:'';abs-full;skeleton-bg;translateX(-100%);@shimmer|2s|infinite}::after
 
       `,
-      //{content:'';abs-full;bg:linear-gradient(90deg,G-20/0|0%,G-20/.5|20%,G-20/.5|60%,G-20/0);translateX(-100%);@shimmer|2s|infinite}::after
+      bg: literal.$`
+        bg:linear-gradient(90deg,G-20/0|0%,G-20/.5|20%,G-20/.5|60%,G-20/0)
+      `,
     },
     effect: {
       fade: literal.$`
         ~opacity|.3s
+        :not([open])_{~0s!}
         {opacity:0!;my:0!;py:0!;~opacity|.3s,margin|.3s|.1s,padding|.3s|.1s}[hide]
       `,
     },

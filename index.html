@@ -121,7 +121,7 @@
       <tk-theme class="abs-center-Y right:5" @click.stop></tk-theme>
     </div>
 
-    <article id="app" class="container" x-data="getData" x-cloak>
+    <article id="app" class="container {py:1x}_.effect-fade" x-data="getData" x-cloak>
       <div>
         <div class="input">
           <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
@@ -131,33 +131,39 @@
       <!-- TK-BUTTON -->
       <section class="details card" x-data="{open:true}" :open="open">
         <summary @click="open=!open">TK-BUTTON</summary>
-        <div x-show="open" x-collapse class="m:8>div">
-          <div x-data="{open:true}" :open="open">
-            <h4 class="subject" @click="open=!open">
-              <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
-            </h4>
-            <div x-show="open" x-collapse>
-              <tk-button>default</tk-button>
-              <tk-button type="theme">theme</tk-button>
-              <tk-button type="dashed">dashed</tk-button>
-              <tk-button type="flat">flat</tk-button>
-              <tk-button type="outline">outline</tk-button>
-              <tk-button type="font">font</tk-button>
+        <div class="effect-fade" :hide="!open">
+          <div x-show="open" x-collapse>
+            <div x-data="{open:true}" :open="open">
+              <div class="subject" @click="open=!open">
+                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
+              </div>
+              <div class="effect-fade" :hide="!open">
+                <div x-show="open" x-collapse>
+                  <tk-button>default</tk-button>
+                  <tk-button type="theme">theme</tk-button>
+                  <tk-button type="dashed">dashed</tk-button>
+                  <tk-button type="flat">flat</tk-button>
+                  <tk-button type="outline">outline</tk-button>
+                  <tk-button type="font">font</tk-button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div x-data="{open:true}" :open="open">
-            <h4 class="subject" @click="open=!open">
-              <tk-icon type="arrow" :flag="1-+open"><span slot="pre">群組</span></tk-icon>
-            </h4>
-            <div x-show="open" x-collapse>
-              <tk-button-group>
-                <tk-button>btn</tk-button>
-                <tk-button>btn</tk-button>
-                <tk-button>btn</tk-button>
-                <tk-button>btn</tk-button>
-                <tk-button>btn</tk-button>
-                <tk-button>btn</tk-button>
-              </tk-button-group>
+            <div x-data="{open:true}" :open="open">
+              <div class="subject" @click="open=!open">
+                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">群組</span></tk-icon>
+              </div>
+              <div class="effect-fade" :hide="!open">
+                <div x-show="open" x-collapse>
+                  <tk-button-group>
+                    <tk-button>btn</tk-button>
+                    <tk-button>btn</tk-button>
+                    <tk-button>btn</tk-button>
+                    <tk-button>btn</tk-button>
+                    <tk-button>btn</tk-button>
+                    <tk-button>btn</tk-button>
+                  </tk-button-group>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -165,9 +171,10 @@
       <!-- TK-COUNTDOWN -->
       <section class="details card" x-data="{open:true}" :open="open">
         <summary @click="open=!open">TK-COUNTDOWN</summary>
-        <div x-show="open" x-collapse>
-          <div
-            x-data="{
+        <div class="effect-fade" :hide="!open">
+          <div x-show="open" x-collapse>
+            <div
+              x-data="{
                 open:true,
                 date:null,
 
@@ -187,18 +194,19 @@
                   this.date = new Date(date).toISOString();
                 },
               }"
-          >
-            <h4 class="subject" @click="open=!open">
-              <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
-            </h4>
-            <div x-show="open" x-collapse>
-              <div x-show="open" x-collapse.duration.300ms>
-                <div class="flex flex:wrap flex:1>*">
-                  <tk-countdown :date="date" @done="TkMessage.info('倒數結束')"></tk-countdown>
-                  <div class="flex flex:wrap gap:.5x">
-                    <tk-button @click="unStart()">開始倒數</tk-button>
-                    <tk-button @click="readyStart()">倒數準備</tk-button>
-                    <tk-button @click="start()" type="theme" cls="bg:danger!.btn">倒數完成</tk-button>
+            >
+              <div class="subject" @click="open=!open">
+                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
+              </div>
+              <div class="effect-fade" :hide="!open">
+                <div x-show="open" x-collapse>
+                  <div class="flex flex:wrap flex:1>*">
+                    <tk-countdown :date="date" @done="TkMessage.info('倒數結束')"></tk-countdown>
+                    <div class="flex flex:wrap gap:.5x">
+                      <tk-button @click="unStart()">開始倒數</tk-button>
+                      <tk-button @click="readyStart()">倒數準備</tk-button>
+                      <tk-button @click="start()" type="theme" cls="bg:danger!.btn">倒數完成</tk-button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -209,13 +217,17 @@
       <!-- TK-MEDIA -->
       <section class="details card" x-data="{open:false}" :open="open">
         <summary @click="open=!open">TK-MEDIA</summary>
-        <div x-show="open" x-collapse>
-          <h4 class="subject">
-            <tk-icon type="arrow" :flag="1-+open" @click="open=!open"><span slot="pre">基礎</span></tk-icon>
-          </h4>
-          <div class="effect-fade" :hide="!open">
-            <div x-show="open" x-collapse.duration.300ms>
-              <tk-media img="https://fakeimg.pl/300/"></tk-media>
+        <div class="effect-fade" :hide="!open">
+          <div x-show="open" x-collapse>
+            <div x-data="{open:true}" :open="open">
+              <div class="subject" @click="open=!open">
+                <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
+              </div>
+              <div class="effect-fade" :hide="!open">
+                <div x-show="open" x-collapse>
+                  <tk-media img="https://fakeimg.pl/300/"></tk-media>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -223,101 +235,103 @@
       <!-- LIST -->
       <section class="details card" x-data="{open:false}" :open="open">
         <summary @click="open=!open">LIST</summary>
-        <div x-show="open" x-collapse>
-          <div class="list">
-            <ul>
-              <li>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, dolor. Maxime rerum optio porro fuga corrupti iure aspernatur culpa repudiandae quisquam cum dolorem, minima tempora,
-                nihil velit ad qui voluptate.
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus vel molestiae, provident, sed et molestias recusandae repellat adipisci ipsa impedit eius sequi commodi incidunt
-                accusantium eos iusto, earum esse consequatur.
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis similique deleniti repellat aliquam quas quae perferendis iusto aut. Amet officiis placeat quibusdam voluptatem illum
-                omnis dolore fugit quas temporibus sint?
-              </li>
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus magnam animi modi molestiae vel sint dolores harum, nam nisi quas pariatur ab quod itaque repudiandae inventore neque
-                rerum! Ad, quo?
-              </li>
-            </ul>
+        <div class="effect-fade" :hide="!open">
+          <div x-show="open" x-collapse>
+            <div class="list">
+              <ul>
+                <li>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, dolor. Maxime rerum optio porro fuga corrupti iure aspernatur culpa repudiandae quisquam cum dolorem, minima tempora,
+                  nihil velit ad qui voluptate.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus vel molestiae, provident, sed et molestias recusandae repellat adipisci ipsa impedit eius sequi commodi incidunt
+                  accusantium eos iusto, earum esse consequatur.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis similique deleniti repellat aliquam quas quae perferendis iusto aut. Amet officiis placeat quibusdam voluptatem illum
+                  omnis dolore fugit quas temporibus sint?
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus magnam animi modi molestiae vel sint dolores harum, nam nisi quas pariatur ab quod itaque repudiandae inventore neque
+                  rerum! Ad, quo?
+                </li>
+              </ul>
 
-            <h4>【XXXXX】</h4>
-            <ol>
-              <li>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id dignissimos blanditiis quae sequi quis, natus sunt maxime delectus ea adipisci eos quo repudiandae similique voluptatem
-                earum ipsam accusamus magnam architecto?
-                <ol class="list--bracket">
-                  <li>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit:
-                    <ul class="list--none">
-                      <li>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium
-                        quasi expedita, itaque nulla molestiae iste veniam est!
-                      </li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                    </ul>
-                  </li>
-                  <li>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit:
-                    <ul class="list--none">
-                      <li>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium
-                        quasi expedita, itaque nulla molestiae iste veniam est!
-                      </li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                    </ul>
-                  </li>
-                </ol>
-              </li>
-              <li>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit:
-                <ol class="list--bracket">
-                  <li>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium quasi
-                    expedita, itaque nulla molestiae iste veniam est!
-                    <ul class="list--none">
-                      <li>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora commodi odio reiciendis aperiam quasi quaerat corporis nemo excepturi corrupti provident. Saepe, nemo aut
-                        praesentium enim aliquid tenetur consequuntur qui obcaecati!
-                      </li>
-                    </ul>
-                  </li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                </ol>
-              </li>
-              <li>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit:
-                <ol class="list--bracket">
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                </ol>
-              </li>
-              <li>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit:
-                <ol class="list--bracket">
-                  <li>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora commodi odio reiciendis aperiam quasi quaerat corporis nemo excepturi corrupti provident. Saepe, nemo aut
-                    praesentium enim aliquid tenetur consequuntur qui obcaecati!
-                  </li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-                </ol>
-              </li>
-              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
-            </ol>
+              <h4>【XXXXX】</h4>
+              <ol>
+                <li>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Id dignissimos blanditiis quae sequi quis, natus sunt maxime delectus ea adipisci eos quo repudiandae similique voluptatem
+                  earum ipsam accusamus magnam architecto?
+                  <ol class="list--bracket">
+                    <li>
+                      Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                      <ul class="list--none">
+                        <li>
+                          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium
+                          quasi expedita, itaque nulla molestiae iste veniam est!
+                        </li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                      </ul>
+                    </li>
+                    <li>
+                      Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                      <ul class="list--none">
+                        <li>
+                          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium
+                          quasi expedita, itaque nulla molestiae iste veniam est!
+                        </li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                      </ul>
+                    </li>
+                  </ol>
+                </li>
+                <li>
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                  <ol class="list--bracket">
+                    <li>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium quasi
+                      expedita, itaque nulla molestiae iste veniam est!
+                      <ul class="list--none">
+                        <li>
+                          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora commodi odio reiciendis aperiam quasi quaerat corporis nemo excepturi corrupti provident. Saepe, nemo aut
+                          praesentium enim aliquid tenetur consequuntur qui obcaecati!
+                        </li>
+                      </ul>
+                    </li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  </ol>
+                </li>
+                <li>
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                  <ol class="list--bracket">
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  </ol>
+                </li>
+                <li>
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                  <ol class="list--bracket">
+                    <li>
+                      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora commodi odio reiciendis aperiam quasi quaerat corporis nemo excepturi corrupti provident. Saepe, nemo aut
+                      praesentium enim aliquid tenetur consequuntur qui obcaecati!
+                    </li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  </ol>
+                </li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+              </ol>
+            </div>
           </div>
         </div>
       </section>

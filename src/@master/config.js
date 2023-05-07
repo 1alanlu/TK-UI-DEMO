@@ -222,9 +222,6 @@
         {hide}>summary::-webkit-details-marker
         {content:'+';abs;right:1x}>summary:after
         {content:'-'}[open]>summary:after
-
-        {~opacity|.3s}>summary+div
-        {opacity:0;my:0;py:0;~opacity|.3s,margin|.3s|.1s,padding|.3s|.1s}:not([open])>summary+div
       `,
     },
     input: {
@@ -316,6 +313,12 @@
 
       `,
       //{content:'';abs-full;bg:linear-gradient(90deg,G-20/0|0%,G-20/.5|20%,G-20/.5|60%,G-20/0);translateX(-100%);@shimmer|2s|infinite}::after
+    },
+    effect: {
+      fade: literal.$`
+        ~opacity|.3s
+        {opacity:0!;my:0!;py:0!;~opacity|.3s,margin|.3s|.1s,padding|.3s|.1s}[hide]
+      `,
     },
     spin: '@rotate|1.4s|linear|infinite',
   };

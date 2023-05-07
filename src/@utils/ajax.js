@@ -144,7 +144,7 @@
       return !this.isDev && !this.isTest;
     },
     get domain() {
-      if (this.isDev) return 'http://localhost:5501';
+      if (this.isDev) return 'http://localhost:5500';
       return this.isTest ? 'https://r0fu9s.csb.app' : 'https://r0fu9s.csb.app';
     },
   };

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI demo</title>
+
+    <!-- Utils -->
+    <script defer src="./src/@utils/obj.js"></script>
+    <script defer src="./src/@utils/ajax.js"></script>
+    <script defer src="./src/@utils/process.js"></script>
+    <script defer src="./src/@utils/anchor.js"></script>
+
+    <!-- MasterCSS -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.145/dist/index.browser.js"></script>-->
+    <script defer src="./src/@master/helpers.js"></script>
+    <script defer src="./src/@master/config.js"></script>
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.145/dist/index.mjs" />
+    <script type="module">
+      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.145/dist/index.mjs';
+      window.masterTheme = new MasterTheme(Theme);
+      window.masterCSSConfig = window.objUtil.merge(window.masterCSSConfig, {
+        colors: {},
+      });
+      window.masterCSS = new MasterCSS(window.masterCSSConfig);
+      window.masterCSSOnload();
+    </script>
+
+    <!-- UI -->
+    <script defer type="module" src="./src/@ui/tk-icon.js"></script>
+    <script defer type="module" src="./src/@ui/tk-button.js"></script>
+    <script defer type="module" src="./src/@ui/tk-checkbox.js"></script>
+    <script defer type="module" src="./src/@ui/tk-radio.js"></script>
+    <script defer type="module" src="./src/@ui/tk-form.js"></script>
+    <script defer type="module" src="./src/@ui/tk-login.js"></script>
+    <script defer type="module" src="./src/@ui/tk-message.js"></script>
+    <script defer type="module" src="./src/@ui/tk-modal.js"></script>
+    <script defer type="module" src="./src/@ui/tk-media.js"></script>
+    <script defer type="module" src="./src/@ui/tk-theme.js"></script>
+    <script defer type="module" src="./src/@ui/tk-countdown.js"></script>
+    <style id="TK-UI_FIX_FOUC">
+      :not(:defined) {
+        display: inline-block;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+    </style>
+
+    <!-- Iconify Icon -->
+    <script defer src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.2/dist/iconify-icon.min.js"></script>
+
+    <!-- Splide -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-default.min.css" rel="stylesheet" />
+
+    <!-- AlpineJS -->
+    <script defer src="./src/@alpine/index.js" version="3.12.0" plugins="mask,collapse"></script>
+    <script>
+      const getData = function () {
+        return {
+          search: '',
+          init() {
+            TkMessage.success('AlpineJS');
+
+            if (true || !window.ajaxUtil.url.isProd) {
+              // window.alpineHost = Alpine.mergeProxies(document.getElementById('app')._x_dataStack);
+              window.alpineHost = Alpine.evaluate(document.getElementById('app'), '$data');
+              Alpine.store('alpineHost', window.alpineHost);
+
+              window.ajaxUtil.getTemplate(document.body, window.ajaxUtil.url.domain + '/src/@alpine/template/dev.html');
+              // window.open(
+              //   window.ajaxUtil.url.domain + '/src/@alpine/template/open.html',
+              //   'alpineDev',
+              //   'height=600,width=768,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'
+              // );
+            }
+          },
+        };
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --font: 'Inter', 'Noto Sans TC', sans-serif;
+      }
+    </style>
+    <!-- Styles -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        width: 100%;
+      }
+
+      body {
+        transition: opacity 0.3s ease-in-out;
+      }
+      [m-cloak],
+      [x-cloak] {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body class="normal scrollbar bg:#eee" m-cloak>
+    <div
+      x-data="{
+        transparentBar: function(){
+          var st = window.scrollY || window.pageYOffset;
+          this.$el.classList.toggle('topbar--fade', st > 50)
+        }
+      }"
+      @scroll.window="transparentBar"
+      class="topbar topbar--sticky"
+    >
+      <tk-theme class="abs-center-Y right:5" @click.stop></tk-theme>
+    </div>
+
+    <article id="app" class="container" x-data="getData" x-cloak>
+      <div>
+        <div class="field">
+          <tk-icon class="pre-icon" icon="mdi:search"></tk-icon>
+          <input class="input" type="text" placeholder="搜尋" x-model.debounce="search" />
+        </div>
+      </div>
+      <!-- TK-BUTTON -->
+      <section class="details card" x-data="{open:true}" :open="open">
+        <summary @click="open=!open">TK-BUTTON</summary>
+        <div x-show="open" x-collapse class="m:8>div">
+          <div x-data="{open:true}" :open="open">
+            <h4 class="subject" @click="open=!open">
+              <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
+            </h4>
+            <div x-show="open" x-collapse>
+              <tk-button>default</tk-button>
+              <tk-button type="theme">theme</tk-button>
+              <tk-button type="dashed">dashed</tk-button>
+              <tk-button type="flat">flat</tk-button>
+              <tk-button type="outline">outline</tk-button>
+              <tk-button type="font">font</tk-button>
+            </div>
+          </div>
+          <div x-data="{open:true}" :open="open">
+            <h4 class="subject" @click="open=!open">
+              <tk-icon type="arrow" :flag="1-+open"><span slot="pre">群組</span></tk-icon>
+            </h4>
+            <div x-show="open" x-collapse>
+              <tk-button-group>
+                <tk-button>btn</tk-button>
+                <tk-button>btn</tk-button>
+                <tk-button>btn</tk-button>
+                <tk-button>btn</tk-button>
+                <tk-button>btn</tk-button>
+                <tk-button>btn</tk-button>
+              </tk-button-group>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- TK-COUNTDOWN -->
+      <section class="details card" x-data="{open:true}" :open="open">
+        <summary @click="open=!open">TK-COUNTDOWN</summary>
+        <div x-show="open" x-collapse>
+          <div
+            x-data="{
+                open:true,
+                date:null,
+  
+                unStart() {
+                  const date = new Date();
+                  date.setDate(date.getDate() + 1);
+                  this.date = new Date(date).toISOString();
+                },
+                readyStart() {
+                  const date = new Date();
+                  date.setSeconds(date.getSeconds() + 3);
+                  this.date = new Date(date).toISOString();
+                },
+                start() {
+                  const date = new Date();
+                  date.setSeconds(date.getSeconds() - 1);
+                  this.date = new Date(date).toISOString();
+                },
+              }"
+          >
+            <h4 class="subject" @click="open=!open">
+              <tk-icon type="arrow" :flag="1-+open"><span slot="pre">基礎</span></tk-icon>
+            </h4>
+            <div x-show="open" x-collapse>
+              <div x-show="open" x-collapse.duration.300ms>
+                <div class="flex flex:wrap flex:1>*">
+                  <tk-countdown :date="date" @done="TkMessage.info('倒數結束')"></tk-countdown>
+                  <div class="flex flex:wrap gap:.5x">
+                    <tk-button @click="unStart()">開始倒數</tk-button>
+                    <tk-button @click="readyStart()">倒數準備</tk-button>
+                    <tk-button @click="start()" type="theme" cls="bg:danger!.btn">倒數完成</tk-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- TK-MEDIA -->
+      <section class="details card" x-data="{open:false}" :open="open">
+        <summary @click="open=!open">TK-MEDIA</summary>
+        <div x-show="open" x-collapse>
+          <h4 class="subject">
+            <tk-icon type="arrow" :flag="1-+open" @click="open=!open"><span slot="pre">基礎</span></tk-icon>
+          </h4>
+          <div class="effect-fade" :hide="!open">
+            <div x-show="open" x-collapse.duration.300ms>
+              <tk-media img="https://fakeimg.pl/300/"></tk-media>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- LIST -->
+      <section class="details card" x-data="{open:false}" :open="open">
+        <summary @click="open=!open">LIST</summary>
+        <div x-show="open" x-collapse>
+          <div class="list">
+            <ul>
+              <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, dolor. Maxime rerum optio porro fuga corrupti iure aspernatur culpa repudiandae quisquam cum dolorem, minima tempora,
+                nihil velit ad qui voluptate.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus vel molestiae, provident, sed et molestias recusandae repellat adipisci ipsa impedit eius sequi commodi incidunt
+                accusantium eos iusto, earum esse consequatur.
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis similique deleniti repellat aliquam quas quae perferendis iusto aut. Amet officiis placeat quibusdam voluptatem illum
+                omnis dolore fugit quas temporibus sint?
+              </li>
+              <li>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus magnam animi modi molestiae vel sint dolores harum, nam nisi quas pariatur ab quod itaque repudiandae inventore neque
+                rerum! Ad, quo?
+              </li>
+            </ul>
+
+            <h4>【XXXXX】</h4>
+            <ol>
+              <li>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id dignissimos blanditiis quae sequi quis, natus sunt maxime delectus ea adipisci eos quo repudiandae similique voluptatem
+                earum ipsam accusamus magnam architecto?
+                <ol class="list--bracket">
+                  <li>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                    <ul class="list--none">
+                      <li>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium
+                        quasi expedita, itaque nulla molestiae iste veniam est!
+                      </li>
+                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                    <ul class="list--none">
+                      <li>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium
+                        quasi expedita, itaque nulla molestiae iste veniam est!
+                      </li>
+                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                      <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                    </ul>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                <ol class="list--bracket">
+                  <li>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio quia quos dolorum modi, sed reprehenderit illum corrupti, ipsum blanditiis quo dignissimos accusantium quasi
+                    expedita, itaque nulla molestiae iste veniam est!
+                    <ul class="list--none">
+                      <li>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora commodi odio reiciendis aperiam quasi quaerat corporis nemo excepturi corrupti provident. Saepe, nemo aut
+                        praesentium enim aliquid tenetur consequuntur qui obcaecati!
+                      </li>
+                    </ul>
+                  </li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                </ol>
+              </li>
+              <li>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                <ol class="list--bracket">
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                </ol>
+              </li>
+              <li>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit:
+                <ol class="list--bracket">
+                  <li>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora commodi odio reiciendis aperiam quasi quaerat corporis nemo excepturi corrupti provident. Saepe, nemo aut
+                    praesentium enim aliquid tenetur consequuntur qui obcaecati!
+                  </li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+                </ol>
+              </li>
+              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+              <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- 購物車 -->
+      <div class="z:modal fixed right:10 bottom:20vh t:right">
+        <div
+          x-data="{
+            open:false,
+            cart: [
+              { ProductID: 1, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product1', isGift: false, price: 900 },
+              { ProductID: 2, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product2', isGift: false, price: 1800 },
+              { ProductID: 3, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product3', isGift: false, price: 9999 },
+            ],
+            get amount() {
+              return this.cart.reduce((acc, item) => acc + item.price, 0);
+            },
+          }"
+        >
+          <tk-button type="theme" shape="circle" icon="material-symbols:shopping-cart-outline" @click="open=!open"></tk-button>
+          <span class="z:1 top:-5 right:-5 abs flex center-content 20x20 round bg:danger f:14 fg:W-50 shadow:md pointer untouchable" x-text="cart.length"></span>
+          <tk-modal cls="{max-w:800!}_.modal-dialog@xs" ok-text="前往結帳" backdrop keyboard :open="open" @close="open=false">
+            <div slot="title" class="t:center">購物車明細</div>
+            <div class="t:left">
+              <div class="$cols:6 $rows:3">
+                <div class="table-head hide@<sm">
+                  <div class="grid-col-span:1">商品圖片</div>
+                  <div class="grid-col-span:3">商品名稱</div>
+                  <div class="grid-col-span:1">數量</div>
+                  <div class="grid-col-span:1">金額</div>
+                </div>
+                <div class="table-body scrollbar">
+                  <template x-for="item in cart" :key="'cart'+item.ProductID">
+                    <div class="table-tr">
+                      <div class="grid-col-span:1@sm {grid-row-span:$(rows);w:90}@<sm">
+                        <tk-media ratio="1/1" :title="item.ProductID" :img="item.ProductImgUrl"></tk-media>
+                      </div>
+                      <div class="grid-col-span:3@sm {grid-row-span:1;pl:5;lines:1}@<sm t:left">
+                        <span x-text="item.ProductName"></span>
+                      </div>
+                      <div class="grid-col-span:1@sm {grid-row-span:1;t:right}@<sm {content:'×'}:before@<sm">
+                        <span x-text="1"></span>
+                      </div>
+                      <div class="grid-col-span:1@sm grid-row-span:1@<sm t:right">
+                        <span x-text="item.isGift?'':$store.filter.price(item.price)"></span>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+              <p class="mt:10 flex jc:end f:bold fg:danger">總計：<span x-text="$store.filter.price(amount)"></span></p>
+            </div>
+          </tk-modal>
+        </div>
+      </div>
+    </article>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DEV測試用</title>
+
+    <!-- Utils -->
+    <script defer src="../../@utils/obj.js"></script>
+    <script defer src="../../@utils/ajax.js"></script>
+    <script defer src="../../@utils/process.js"></script>
+    <script defer src="../../@utils/anchor.js"></script>
+
+    <!-- MasterCSS -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.145/dist/index.browser.js"></script>-->
+    <script defer src="../../@master/helpers.js"></script>
+    <script defer src="../../@master/config.js"></script>
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.145/dist/index.mjs" />
+    <script type="module">
+      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.145/dist/index.mjs';
+      window.masterTheme = new MasterTheme(Theme);
+      window.masterCSSConfig = window.objUtil.merge(window.masterCSSConfig, {
+        colors: {},
+      });
+      window.masterCSS = new MasterCSS(window.masterCSSConfig);
+      window.masterCSSOnload();
+    </script>
+
+    <!-- UI -->
+    <script defer type="module" src="../../@ui/tk-icon.js"></script>
+    <script defer type="module" src="../../@ui/tk-button.js"></script>
+    <script defer type="module" src="../../@ui/tk-checkbox.js"></script>
+    <script defer type="module" src="../../@ui/tk-radio.js"></script>
+    <script defer type="module" src="../../@ui/tk-message.js"></script>
+    <script defer type="module" src="../../@ui/tk-modal.js"></script>
+    <script defer type="module" src="../../@ui/tk-media.js"></script>
+    <style id="TK-UI_FIX_FOUC">
+      :not(:defined) {
+        display: inline-block;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+    </style>
+
+    <!-- Iconify Icon -->
+    <script defer src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.2/dist/iconify-icon.min.js"></script>
+
+    <!-- Alpine Js -->
+    <script defer src="../index.js" version="3.12.0" plugins="mask,collapse"></script>
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.store('alpineHost', opener.alpineHost);
+        setInterval(() => {
+          Alpine.store('alpineHost', opener.alpineHost.$data);
+        }, 500);
+      });
+      window.AlpineInitQueue = [
+        () => {
+          const app = document.getElementById('app');
+          window.ajaxUtil.getTemplate(app, './dev.html', () => {
+            let content = document.getElementById('devPanel');
+            content.setAttribute('window', '');
+            Alpine.nextTick(() => {
+              content.dispatchEvent(new CustomEvent('show'));
+            });
+          });
+        },
+      ];
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --font: 'Inter', 'Noto Sans TC', sans-serif;
+      }
+    </style>
+    <!-- Styles -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        width: 100%;
+      }
+
+      body {
+        transition: opacity 0.3s ease-in-out;
+      }
+      [m-cloak],
+      [x-cloak] {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" x-data></div>
+  </body>
+</html>

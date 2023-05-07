@@ -123,9 +123,9 @@
 
     <article id="app" class="container" x-data="getData" x-cloak>
       <div>
-        <div class="field">
-          <tk-icon class="pre-icon" icon="mdi:search"></tk-icon>
-          <input class="input" type="text" placeholder="搜尋" x-model.debounce="search" />
+        <div class="input">
+          <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
+          <input type="text" placeholder="搜尋" x-model.debounce="search" />
         </div>
       </div>
       <!-- TK-BUTTON -->
@@ -170,7 +170,7 @@
             x-data="{
                 open:true,
                 date:null,
-  
+
                 unStart() {
                   const date = new Date();
                   date.setDate(date.getDate() + 1);

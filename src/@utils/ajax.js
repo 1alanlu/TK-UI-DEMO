@@ -116,11 +116,9 @@
   }
 
   function getTemplate(wrap, url, func) {
-    console.log(url);
     fetch(url)
       .then((response) => response.text())
       .then((template) => {
-        console.log(template);
         const html = new DOMParser().parseFromString(template, 'text/html');
         // const scripts = html.head.querySelectorAll('script');
         // scripts.forEach((script) => wrap.append(script));

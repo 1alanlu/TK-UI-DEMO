@@ -18,7 +18,7 @@
       },
     }"
   >
-    <tk-button type="theme" shape="circle" icon="material-symbols:shopping-cart-outline" @click="sections['cart'].open=!open"></tk-button>
+    <tk-button type="theme" shape="circle" icon="material-symbols:shopping-cart-outline" @click="sections['cart'].open=!sections['cart'].open"></tk-button>
     <span class="z:1 top:-5 right:-5 abs flex center-content 20x20 round bg:danger f:14 fg:W-50 shadow:md pointer untouchable" x-text="cart.length"></span>
     <tk-modal cls="{max-w:800!}_.modal-dialog@xs" ok-text="前往結帳" backdrop keyboard :open="sections['cart'].open" @close="sections['cart'].open=false">
       <div slot="title" class="t:center">購物車明細</div>

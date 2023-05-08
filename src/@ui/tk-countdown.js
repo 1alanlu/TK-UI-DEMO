@@ -3,7 +3,7 @@ const cssLiteral = window.masterCSSLiteral;
 const cls = {
   unit: {
     '': cssLiteral.$`
-      rel h:full r:.5x fg:theme-fg bg:theme shadow:2|2|8|0|theme/.16 overflow:hidden
+      rel h:full r:0x fg:theme-fg bg:theme shadow:2|2|8|0|theme/.16 overflow:hidden
       {content:'';abs;top:0;w:full;h:50%;bg:W-50/.16}::before
       {content:'';abs-center;w:90%;h:40%;bx:2|solid|theme-fg}::after
       {flex;h:1em;overflow:hidden}>div

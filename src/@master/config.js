@@ -26,13 +26,13 @@
   };
 
   const values = {
-    '.5x': 4,
+    '0x': 4,
     '1x': 8,
     '2x': 16,
     '3x': 24,
     '4x': 32,
     '5x': 40,
-    '-.5x': -4,
+    '-0x': -4,
     '-1x': -8,
     '-2x': -16,
     '-3x': -24,
@@ -238,11 +238,11 @@
       '': literal.$`
         box:border overflow:hidden
         rel flex ai:center jc:space-between
-        r:.5x h:4x
+        r:0x h:4x
         fg:fg bg:bg-box b:1|solid|G-50
         ~.2s
 
-        {box:border;p:.5x|1x;full;f:inherit;fg:inherit;bg:none;b:none;outline:none;appearance:none}>input
+        {box:border;p:0x|1x;full;f:inherit;fg:inherit;bg:none;b:none;outline:none;appearance:none}>input
         {fg:G-40;~.2s}>input::placeholder
         {opacity:0}>input:focus::placeholder
         {translateY(-100%)}>input:not(:empty)::placeholder
@@ -280,7 +280,7 @@
         f:12 color:fg/.7
         ~.2s
         max-h:0 opacity:0 invisible
-        {mt:.5x;max-h:30;opacity:1;visible}[show]
+        {mt:0x;max-h:30;opacity:1;visible}[show]
       `,
     },
     field: {
@@ -327,7 +327,7 @@
         {z:-1;content:'';abs-full;bg:theme;opacity:0;~opacity|.2s;untouchable}::before
         {opacity:.1;z:0}:hover::before
         {p:1x}>div@sm
-        {p:.5x}>div@<sm
+        {p:0x}>div@<sm
       `,
     },
     skeleton: {

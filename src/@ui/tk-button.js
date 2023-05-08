@@ -6,7 +6,7 @@ const cls = {
     '': cssLiteral.$`
       box:border rel overflow:hidden
       inline-flex center-content gap:1x
-      p:.5x|1x r:inherit w:inherit h:inherit
+      p:0x|1x r:inherit w:inherit h:inherit
       f:inherit fg:$(fg,inherit) bg:$(bg,inherit)
       t:center vertical-align:middle
       text-transform:inherit text:none white-space:nowrap
@@ -33,7 +33,7 @@ const cls = {
       {transform:translate(-50%,-50%)|scale(0);opacity:.3;~none}:not([disabled]):active::after
     `,
     '-noborder': cssLiteral.$`
-      b:0 p:calc(.5x+1)|calc(1x+1)!
+      b:0 p:calc(0x+1)|calc(1x+1)!
       :host(:empty)_{p:1x!}
     `,
     type: {

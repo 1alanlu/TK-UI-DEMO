@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW" style="display: none">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI demo</title>
+    <!-- MasterCSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.146/dist/index.browser.js"></script>
+    <!-- UI -->
+    <script defer type="module" src="./src/@ui/simple-greeting.js"></script>
+    <script type="module">
+      import { LitElement, html, css, classMap, unsafeCSS, nothing } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
+      class SimpleGreeting extends LitElement {
+        static styles = css`
+          p {
+            color: blue;
+          }
+        `;
+
+        static properties = {
+          name: { type: String },
+        };
+
+        constructor() {
+          super();
+          this.name = 'Somebody';
+        }
+
+        render() {
+          return html`<p class="fg:white bg:gray-50">Hello, ${this.name}!</p>`;
+        }
+        connectedCallback() {
+          super.connectedCallback();
+          this.css = new MasterCSS({
+            themeDriver: 'host',
+            observe: false,
+          }).observe(this.shadowRoot);
+        }
+        disconnectedCallback() {
+          super.disconnectedCallback();
+          if (this.css) this.css.destroy();
+        }
+      }
+      customElements.define('simple-greeting', SimpleGreeting);
+    </script>
+  </head>
+  <body>
+    <simple-greeting name="Lit"></simple-greeting>
+    <p class="fg:white bg:gray-50">fg:white bg:gray-50</p>
+  </body>
+</html>

@@ -9,7 +9,7 @@ const cls = {
   checked: {
     '': cssLiteral.$`
       box:border rel
-      flex center-content r:.5x
+      flex center-content r:0x
       w:1em h:1em
       ~.2s
       :not([disabled]):hover_{z:1}

@@ -1,4 +1,4 @@
-import { LitElement, html, css, classMap, unsafeCSS, nothing, ref, createRef, literal, staticHtml } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.6.1/all/lit-all.min.js';
+import { LitElement, html, css, classMap, unsafeCSS, nothing, ref, createRef, literal, staticHtml } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
 const cssLiteral = window.masterCSSLiteral;
 const cls = {

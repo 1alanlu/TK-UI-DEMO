@@ -1,4 +1,4 @@
-import { LitElement, html, css, classMap, unsafeCSS, nothing, map, ref, createRef } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.6.1/all/lit-all.min.js';
+import { LitElement, html, css, classMap, unsafeCSS, nothing, map, ref, createRef } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 // 已開啟彈窗
 const opened = [];
 

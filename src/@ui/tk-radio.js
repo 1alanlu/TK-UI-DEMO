@@ -138,7 +138,7 @@ export class TkRadioGroup extends LitElement {
       transition: opacity 0.2s;
     }
     ::slotted(tk-radio:not(:first-child)) {
-      margin-left: 8px;
+      margin-left: ${unsafeCSS(window.masterCSSConfig.values['1x'] + 'px')};
     }
   `;
   static properties = {

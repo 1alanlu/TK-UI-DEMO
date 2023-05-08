@@ -50,8 +50,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.2/dist/iconify-icon.min.js"></script>
 
     <!-- Splide -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-default.min.css" rel="stylesheet" />
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-default.min.css" rel="stylesheet" /> -->
 
     <!-- AlpineJS -->
     <script defer src="./src/@alpine/index.js" version="3.12.0" plugins="mask"></script>
@@ -69,7 +69,7 @@
           },
 
           init() {
-            this.initSections();
+            // this.initSections();
 
             this.$watch('search', (search) => {
               Object.entries(this.sections).forEach(([section, settings]) => {
@@ -149,6 +149,86 @@
           <input type="text" placeholder="搜尋" x-model.debounce="search" />
         </div>
         <div x-ref="sections" class="opacity:0 ~opacity|.2s"></div>
+        <section class="accordion card hide[hide]" x-id="['accordion']" :hide="sections['tk-media'].hide">
+          <input type="checkbox" :id="$id('accordion')" x-model="sections['tk-media'].open" @change="sections['tk-media'].open=$el.checked" />
+          <label class="accordion-title" :for="$id('accordion')">TK-MEDIA</label>
+          <div class="accordion-content">
+            <div class="min-h:0">
+              <div class="accordion" x-id="['accordion']" x-data="{ w:1, h:1, portrait:false, auto:false, skeleton:false}">
+                <input type="checkbox" :id="$id('accordion')" checked />
+                <label class="subject" :for="$id('accordion')">
+                  <div class="flex center-content">
+                    <span>IMAGE</span>
+                    <tk-icon type="arrow" :flag="0"></tk-icon>
+                  </div>
+                </label>
+                <div class="accordion-content">
+                  <div class="min-h:0">
+                    <div class="flex flex:wrap ai:center gap:4x py:1x">
+                      <div class="inline-flex center-content">
+                        <span>ratio:</span>
+                        <div class="input inline-flex w:100 h:3x!">
+                          <input type="number" placeholder="width" x-model.number.debounce="w" />
+                          <span>/</span>
+                          <input type="number" placeholder="height" x-model.number.debounce="h" />
+                        </div>
+                      </div>
+                      <tk-checkbox-group>
+                        <tk-checkbox @change="portrait=$event.detail.checked">portrait</tk-checkbox>
+                        <tk-checkbox @change="auto=$event.detail.checked">auto</tk-checkbox>
+                        <tk-checkbox @change="skeleton=$event.detail.checked">skeleton</tk-checkbox>
+                      </tk-checkbox-group>
+                    </div>
+                    <div class="flex flex:wrap gap:1x {max-w:150;bg:G-50/.2}_tk-media">
+                      <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" img="https://fakeimg.pl/150/"></tk-media>
+                      <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" img="https://fakeimg.pl/150x200/"></tk-media>
+                      <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" img="https://fakeimg.pl/200x150/"></tk-media>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion" x-id="['accordion']" x-data="{ w:16, h:9, portrait:false, auto:false, skeleton:false, img:null, video:'https://www.youtube.com/watch?v=KZbswFDOOsY'}">
+                <input type="checkbox" :id="$id('accordion')" checked />
+                <label class="subject" :for="$id('accordion')">
+                  <div class="flex center-content">
+                    <span>VIDEO</span>
+                    <tk-icon type="arrow" :flag="0"></tk-icon>
+                  </div>
+                </label>
+                <div class="accordion-content">
+                  <div class="min-h:0">
+                    <div class="flex flex:wrap ai:center gap:4x py:1x">
+                      <div class="inline-flex center-content">
+                        <span>ratio:</span>
+                        <div class="input inline-flex w:100 h:3x!">
+                          <input type="number" placeholder="width" x-model.number.debounce="w" />
+                          <span>/</span>
+                          <input type="number" placeholder="height" x-model.number.debounce="h" />
+                        </div>
+                      </div>
+                      <tk-checkbox-group>
+                        <tk-checkbox @change="portrait=$event.detail.checked">portrait</tk-checkbox>
+                        <tk-checkbox @change="auto=$event.detail.checked">auto</tk-checkbox>
+                        <tk-checkbox @change="skeleton=$event.detail.checked">skeleton</tk-checkbox>
+                      </tk-checkbox-group>
+                      <div>
+                        <div class="inline-flex center-content">
+                          <span>cover:</span>
+                          <div class="input w:300 h:3x!">
+                            <input type="text" placeholder="img-src" x-model.debounce="img" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex flex:wrap gap:1x {max-w:600;bg:G-50/.2}_tk-media">
+                      <tk-media :ratio="!auto && `${w}/${h}`" :portrait="portrait" :auto="auto" :skeleton="skeleton" :img="img" :video="video"></tk-media>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </body>

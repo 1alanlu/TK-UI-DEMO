@@ -6,7 +6,7 @@ const cls = {
     '': cssLiteral.$`
       rel block overflow:hidden
       m:0 w:full
-      {content:'';block;pt:calc(var(--h)/var(--w)*100%);w:full}::before
+      {content:'';block;pt:calc($(h)/$(w)*100%);w:full}::before
     `,
   },
   img: {

@@ -6,7 +6,7 @@ const cls = {
     '': cssLiteral.$`
       rel block overflow:hidden
       m:0 w:full
-      {content:'';block;pt:calc($(h)|/|$(w)*100%);w:full}::before
+      {content:'';block;pt:calc(var(--h)/var(--w)*100%);w:full}::before
     `,
   },
   img: {
@@ -53,6 +53,7 @@ export default class TkMedia extends LitElement {
 
     preventedVideo: { type: Boolean, attribute: 'prevented-video' },
     preventedLazy: { type: Boolean, attribute: 'prevented-lazy' },
+    preventedSkeleton: { type: Boolean, attribute: 'prevented-skeleton' },
 
     _coverSrc: { type: String, state: true },
     _portrait: { type: Boolean, state: true },
@@ -100,7 +101,7 @@ export default class TkMedia extends LitElement {
         class=${Object.values({
           main: 'media',
           ratio: `$w:${w} $h:${h}`,
-          skeleton: this.skeleton || !this._loaded ? 'skeleton' : '',
+          skeleton: this.preventedSkeleton ? '' : this.skeleton || !this._loaded ? 'skeleton' : '',
           portrait: this._portrait ? 'portrait' : '',
           coverBg: this._ytID ? '$skeleton-bg:black' : '',
           keepCover: this._loadingVideo ? '{opacity:1!;visible!}_img' : '',

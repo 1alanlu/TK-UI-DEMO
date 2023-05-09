@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UI demo</title>
+    <title>UI DEMO</title>
+    <link rel="icon" type="image/x-icon" href="https://fakeimg.pl/50/ffffff/?text=logo" />
 
     <!-- Utils -->
     <script defer src="./src/@utils/obj.js"></script>
@@ -12,12 +13,12 @@
     <script defer src="./src/@utils/anchor.js"></script>
 
     <!-- MasterCSS -->
-    <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.148/dist/index.browser.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.149/dist/index.browser.js"></script>-->
     <script defer src="./src/@master/helpers.js"></script>
     <script defer src="./src/@master/config.js"></script>
-    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.148/dist/index.mjs" />
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.149/dist/index.mjs" />
     <script type="module">
-      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.148/dist/index.mjs';
+      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.149/dist/index.mjs';
       window.masterTheme = new MasterTheme(Theme);
       window.masterCSSConfig = window.objUtil.merge(window.masterCSSConfig, {
         colors: {},
@@ -26,18 +27,8 @@
     </script>
 
     <!-- UI -->
-    <script defer type="module" src="./src/@ui/tk-icon.js"></script>
-    <script defer type="module" src="./src/@ui/tk-button.js"></script>
-    <script defer type="module" src="./src/@ui/tk-checkbox.js"></script>
-    <script defer type="module" src="./src/@ui/tk-radio.js"></script>
-    <script defer type="module" src="./src/@ui/tk-form.js"></script>
-    <script defer type="module" src="./src/@ui/tk-login.js"></script>
-    <script defer type="module" src="./src/@ui/tk-message.js"></script>
-    <script defer type="module" src="./src/@ui/tk-modal.js"></script>
-    <script defer type="module" src="./src/@ui/tk-media.js"></script>
-    <script defer type="module" src="./src/@ui/tk-theme.js"></script>
-    <script defer type="module" src="./src/@ui/tk-countdown.js"></script>
-    <style id="TK-UI_FIX_FOUC">
+    <script defer type="module" src="./src/@ui/index.js"></script>
+    <style id="FIX_UI_FOUC">
       :not(:defined) {
         display: inline-block;
         height: 100vh;
@@ -59,44 +50,38 @@
       const getData = function () {
         return {
           search: '',
-          sections: {
-            'tk-icon': { open: false, hide: false },
-            'tk-button': { open: false, hide: false },
-            'tk-countdown': { open: false, hide: false },
-            'tk-media': { open: false, hide: false },
-            list: { open: false, hide: false },
-            cart: { open: false, hide: false },
-          },
-
-          init() {
-            this.initSections();
-
+          sections: null,
+          loading: { sections: null },
+          async init() {
             this.$watch('search', (search) => {
               Object.entries(this.sections).forEach(([section, settings]) => {
                 settings.hide = !section.includes(search.toLowerCase());
               });
             });
 
-            if (true || !window.ajaxUtil.url.isProd) {
-              // window.alpineHost = Alpine.mergeProxies(document.getElementById('app')._x_dataStack);
-              window.alpineHost = Alpine.evaluate(document.getElementById('app'), '$data');
-              Alpine.store('alpineHost', window.alpineHost);
+            await this.initSections();
 
-              window.ajaxUtil.getTemplate(document.body, window.ajaxUtil.url.domain + '/src/@alpine/template/dev.html');
-              // window.open(
-              //   window.ajaxUtil.url.domain + '/src/@alpine/template/open.html',
-              //   'alpineDev',
-              //   'height=600,width=768,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'
-              // );
+            if (true || !window.ajaxUtil.url.isProd) {
+              window.ajaxUtil.getTemplate(document.body, window.ajaxUtil.url.domain + '/src/@alpine/template/grid.html');
+              this.$store.devPanel(window.ajaxUtil.url.domain + '/src/@alpine/template/devPanel.html');
             }
           },
           async initSections() {
-            const sections = await Promise.allSettled(Object.keys(this.sections).map((key) => window.ajaxUtil.getText(`${window.ajaxUtil.url.domain}/src/sections/${key}.html`)));
+            this.loading.sections = true;
+            const result = window.ajaxUtil.get({ url: window.ajaxUtil.url.domain + '/data/sections.json' });
+            const delay = new Promise((r) => setTimeout(r, 1000));
+            const [[error, res]] = await Promise.all([result, delay]);
+            if (error || !res) return;
+
+            this.sections = res;
+            const sections = await Promise.allSettled(Object.keys(this.sections).map((key) => window.ajaxUtil.getText(`${window.ajaxUtil.url.domain}/sections/${key}.html`)));
             sections.forEach((section) => {
               if (section.status != 'fulfilled') return;
               window.ajaxUtil.setTemplate(this.$refs.sections, section.value);
             });
             this.$refs.sections.style.opacity = 1;
+            window.TkMessage.success('Sections')
+            this.loading.sections = false;
           },
         };
       };
@@ -127,29 +112,51 @@
       }
     </style>
   </head>
-  <body class="normal bg:#eee">
-    <!-- TopBar -->
-    <div
-      class="topbar topbar--fixed"
+  <body class="normal bg:#eee @" x-data="getData">
+    <!-- Header -->
+    <header
+      class="header header--fixed flex ai:center {opacity:.8;shadow:md}.header--fade"
       x-data="{
-        transparentBar: function(){
-          var st = window.scrollY || window.pageYOffset;
-          this.$el.classList.toggle('topbar--fade', st > 50)
-        }
-      }"
+          transparentBar: function(){
+            var st = window.scrollY || window.pageYOffset;
+            this.$el.classList.toggle('header--fade', st > 50)
+          }
+        }"
       @scroll.window="transparentBar"
     >
-      <tk-theme class="abs-center-y right:5" @click.stop></tk-theme>
-    </div>
-    <!-- APP -->
-    <div id="app" class="container {py:1x}_.effect-fade" x-data="getData" x-cloak>
-      <div>
-        <div class="input">
-          <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
-          <input type="text" placeholder="搜尋" x-model.debounce="search" />
+      <div class="container w:full py:0 flex flex:wrap ai:center jc:space-between">
+        <div class="flex ai:center">
+          <!-- ICON -->
+          <div class="flex ai:center opacity:0.8:hover ~opacity|.2s pointer">
+            <div class="w:4x h:4x r:0x overflow:hidden">
+              <tk-media img="https://fakeimg.pl/50/ffffff/?text=logo" prevented-lazy prevented-skeleton></tk-media>
+            </div>
+            <p class="ml:2x fg:theme-fg">UI DEMO</p>
+          </div>
+          <!-- SEARCH -->
+          <div class="input ml:5x opacity:.5 opacity:.8:hover ~opacity|.2s">
+            <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
+            <input type="search" placeholder="Search" x-model.debounce="search" />
+          </div>
         </div>
-        <div x-ref="sections" class="opacity:0 ~opacity|.2s"></div>
+        <div class="flex">
+          <div>
+            <tk-button type="theme" shape="circle" icon="ph:github-logo" href="https://github.com/zhongyoulu/TK-UI-DEMO"></tk-button>
+            <tk-button type="theme" shape="circle" icon="ph:codesandbox-logo" href="https://codesandbox.io/s/github/zhongyoulu/TK-UI-DEOM"></tk-button>
+          </div>
+          <tk-theme class="ml:2x" @click.stop @theme="window.TkMessage.success('theme: ' + $event.detail.current)"></tk-theme>
+        </div>
       </div>
+    </header>
+    <!-- APP -->
+    <div id="app" class="flex flex:column min-h:calc(100vh-header)">
+      <template x-if="loading.sections">
+        <tk-icon loading class="my:5x">Loading</tk-icon>
+      </template>
+      <!-- Sections -->
+      <div x-ref="sections" class="flex:1 container mb:5x opacity:0 ~opacity|.2s" x-cloak></div>
+      <!-- Footer -->
+      <footer class="mt:auto p:1x t:center bg:theme fg:theme-fg">© ZYL</footer>
     </div>
   </body>
 </html>

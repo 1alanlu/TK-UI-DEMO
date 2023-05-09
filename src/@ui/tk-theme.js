@@ -12,18 +12,8 @@ export class TkTheme extends LitElement {
     this.currentTheme = null;
   }
 
-  btnRef = createRef();
-
   render() {
-    return html`<tk-button
-      ${ref(this.btnRef)}
-      class=${unsafeCSS(window.masterTheme.current)}
-      @theme=${(e) => window.TkMessage.success('theme: ' + e.detail.current)}
-      @click=${this.toggleTheme}
-      type="theme"
-      shape="circle"
-      icon=${this._icon}
-    ></tk-button>`;
+    return html`<tk-button type="theme" shape="circle" icon=${this._icon} class=${unsafeCSS(window.masterTheme.current)} @click=${this.toggleTheme}></tk-button>`;
   }
 
   // THEME_KEY = 'theme';

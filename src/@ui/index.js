@@ -1,0 +1,11 @@
+import './tk-icon.js';
+import './tk-button.js';
+import './tk-checkbox.js';
+import './tk-radio.js';
+import './tk-form.js';
+import './tk-login.js';
+import './tk-message.js';
+import './tk-modal.js';
+import './tk-media.js';
+import './tk-theme.js';
+import './tk-countdown.js';

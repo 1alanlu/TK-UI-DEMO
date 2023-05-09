@@ -1,0 +1,60 @@
+<div
+  class="z:modal fixed w:full left:0 bottom:20vh untouchable hide[hide]"
+  :hide="sections['cart'].hide"
+  x-data="{
+    cart: [
+      { ProductID: 1, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product1', isGift: false, price: 900 },
+      { ProductID: 2, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product2', isGift: false, price: 1800 },
+      { ProductID: 3, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product3', isGift: false, price: 9999 },
+      { ProductID: 4, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product4', isGift: false, price: 9999 },
+      { ProductID: 5, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product5', isGift: false, price: 9999 },
+      { ProductID: 6, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product6', isGift: false, price: 9999 },
+      { ProductID: 7, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product7', isGift: false, price: 9999 },
+      { ProductID: 8, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product8', isGift: false, price: 9999 },
+      { ProductID: 9, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product9', isGift: false, price: 9999 },
+      { ProductID: 10, ProductImgUrl: 'https://fakeimg.pl/200', ProductName: 'product10', isGift: false, price: 9999 },
+    ],
+    get amount() {
+      return this.cart.reduce((acc, item) => acc + item.price, 0);
+    },
+  }"
+>
+  <div class="rel container mx:auto pointer-events:initial">
+    <div class="abs-center-y left:calc(100%+5x)@2xl right:1x@<2xl">
+      <tk-button type="theme" shape="circle" icon="material-symbols:shopping-cart-outline" @click="sections['cart'].open=!sections['cart'].open"></tk-button>
+      <span class="z:1 abs top:-1x right:-1x flex center-content 20x20 round bg:danger f:14 fg:W-50 shadow:md untouchable" x-text="cart.length"></span>
+    </div>
+    <tk-modal cls="{max-w:800!}_.modal-dialog@xs" ok-text="前往結帳" backdrop keyboard :open="sections['cart'].open" @close="sections['cart'].open=false">
+      <div slot="title" class="t:center">購物車明細</div>
+      <div class="t:left">
+        <div class="$cols:6 $rows:3">
+          <div class="table-head hide@<sm">
+            <div class="grid-col-span:1">商品圖片</div>
+            <div class="grid-col-span:3">商品名稱</div>
+            <div class="grid-col-span:1">數量</div>
+            <div class="grid-col-span:1">金額</div>
+          </div>
+          <div class="table-body scrollbar">
+            <template x-for="item in cart" :key="'cart'+item.ProductID">
+              <div class="table-tr">
+                <div class="grid-col-span:1@sm {grid-row-span:$(rows);w:90}@<sm">
+                  <tk-media ratio="1/1" :title="item.ProductID" :img="item.ProductImgUrl"></tk-media>
+                </div>
+                <div class="grid-col-span:3@sm {grid-row-span:1;pl:5;lines:1}@<sm t:left">
+                  <span x-text="item.ProductName"></span>
+                </div>
+                <div class="grid-col-span:1@sm {grid-row-span:1;t:right}@<sm {content:'×'}:before@<sm">
+                  <span x-text="1"></span>
+                </div>
+                <div class="grid-col-span:1@sm grid-row-span:1@<sm t:right">
+                  <span x-text="item.isGift?'':$store.filter.price(item.price)"></span>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+        <p class="mt:10 flex jc:end f:bold fg:danger">總計：<span x-text="$store.filter.price(amount)"></span></p>
+      </div>
+    </tk-modal>
+  </div>
+</div>

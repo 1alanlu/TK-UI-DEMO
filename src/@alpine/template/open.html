@@ -12,12 +12,12 @@
     <script defer src="../../@utils/anchor.js"></script>
 
     <!-- MasterCSS -->
-    <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.148/dist/index.browser.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.149/dist/index.browser.js"></script>-->
     <script defer src="../../@master/helpers.js"></script>
     <script defer src="../../@master/config.js"></script>
-    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.148/dist/index.mjs" />
+    <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.149/dist/index.mjs" />
     <script type="module">
-      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.148/dist/index.mjs';
+      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.149/dist/index.mjs';
       window.masterTheme = new MasterTheme(Theme);
       window.masterCSSConfig = window.objUtil.merge(window.masterCSSConfig, {
         colors: {},
@@ -26,14 +26,8 @@
     </script>
 
     <!-- UI -->
-    <script defer type="module" src="../../@ui/tk-icon.js"></script>
-    <script defer type="module" src="../../@ui/tk-button.js"></script>
-    <script defer type="module" src="../../@ui/tk-checkbox.js"></script>
-    <script defer type="module" src="../../@ui/tk-radio.js"></script>
-    <script defer type="module" src="../../@ui/tk-message.js"></script>
-    <script defer type="module" src="../../@ui/tk-modal.js"></script>
-    <script defer type="module" src="../../@ui/tk-media.js"></script>
-    <style id="TK-UI_FIX_FOUC">
+    <script defer type="module" src="../../@ui/index.js"></script>
+    <style id="FIX_UI_FOUC">
       :not(:defined) {
         display: inline-block;
         height: 100vh;
@@ -57,12 +51,9 @@
       window.AlpineInitQueue = [
         () => {
           const app = document.getElementById('app');
-          window.ajaxUtil.getTemplate(app, './dev.html', () => {
+          window.ajaxUtil.getTemplate(app, opener.devPanelUrl, () => {
             let content = document.getElementById('devPanel');
             content.setAttribute('window', '');
-            Alpine.nextTick(() => {
-              content.dispatchEvent(new CustomEvent('show'));
-            });
           });
         },
       ];
@@ -93,7 +84,23 @@
       }
     </style>
   </head>
-  <body>
-    <div id="app" x-data x-cloak></div>
+  <body class="normal" x-data :class="$store.darkMode.on && 'dark'">
+    <!-- header -->
+    <header
+      class="header header--fixed flex ai:center {opacity:.8;shadow:md}.header--fade"
+      x-data="{
+        transparentBar: function(){
+          var st = window.scrollY || window.pageYOffset;
+          this.$el.classList.toggle('header--fade', st > 50)
+        }
+      }"
+      @scroll.window="transparentBar"
+    >
+      <div class="container w:full py:0 flex flex:wrap ai:center jc:space-between">
+        <p class="fg:theme-fg">儀表板</p>
+        <tk-theme class="@click.stop" @theme="window.TkMessage.success('theme: ' + $event.detail.current)"></tk-theme>
+      </div>
+    </header>
+    <div id="app" x-cloak></div>
   </body>
 </html>

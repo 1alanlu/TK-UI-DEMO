@@ -16,7 +16,7 @@ const cls = {
       {opacity:1;visible}[open]
     `,
     dialog: cssLiteral.$`
-      flex rel m:auto p:2x r:0x
+      flex m:auto p:2x r:0x
       min-w:3xs@2xs
       w:full@<2xs
       bg:bg-box

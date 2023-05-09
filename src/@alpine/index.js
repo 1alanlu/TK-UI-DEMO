@@ -19,6 +19,21 @@
   script.src = `https://unpkg.com/alpinejs@${version}/dist/cdn.min.js`;
   document.head.appendChild(script);
 
+  const globalData = () => {};
+  const globalBind = () => {
+    Alpine.bind('SomeButton', () => ({
+      type: 'button',
+
+      '@click'() {
+        this.doSomething();
+      },
+
+      ':disabled'() {
+        return this.shouldDisable;
+      },
+    }));
+  };
+
   const globalStore = () => {
     // ----------------------------------------------------------------
     // CacheGetter
@@ -77,9 +92,38 @@
         return 'NT$ ' + this.comma(value);
       },
     });
+
+    // ----------------------------------------------------------------
+    // Dev
+    // ----------------------------------------------------------------
+    Alpine.store('devPanel', function (devPanelUrl) {
+      // window.alpineHost = Alpine.mergeProxies(document.getElementById('app')._x_dataStack);
+      window.alpineHost = Alpine.evaluate(document.getElementById('app'), '$data');
+      Alpine.store('alpineHost', window.alpineHost);
+
+      window.devPanelUrl = devPanelUrl;
+      window.ajaxUtil.getTemplate(document.body, window.devPanelUrl);
+      // window.open(
+      //   window.ajaxUtil.url.domain + '/src/@alpine/template/open.html',
+      //   'alpineDev',
+      //   'height=600,width=768,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'
+      // );
+    });
+
+    Alpine.store('darkMode', {
+      init() {
+        this.on = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      },
+      on: false,
+      toggle() {
+        this.on = !this.on;
+      },
+    });
   };
 
   document.addEventListener('alpine:init', () => {
+    globalData();
+    globalBind();
     globalStore();
     if (window.AlpineInitQueue) {
       window.AlpineInitQueue.forEach((queueFunc) => queueFunc());

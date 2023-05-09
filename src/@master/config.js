@@ -32,7 +32,7 @@
     '3x': 24,
     '4x': 32,
     '5x': 40,
-    topbar: 45,
+    header: 45,
   };
 
   const baseColors = {
@@ -50,9 +50,9 @@
     info: '#2F80ED',
     link: '#0F62FE',
 
-    theme: { '': '#FFC552', fg: '#FFFFFF' },
+    theme: { '': 'brown-60', fg: '#FFFFFF' },
     fg: { '': '#333333' },
-    bg: { '': '#FEFEFE', box: '#FEFEFE', btn: '#FEFEFE', topbar: '#494949' },
+    bg: { '': '#FEFEFE', box: '#FEFEFE', btn: '#FEFEFE' },
   };
 
   const themes = {
@@ -84,7 +84,7 @@
     },
     zIndex: {
       values: {
-        topbar: 100000,
+        header: 100000,
         modal: 100050,
         message: 100051,
         devPanel: 999999,
@@ -144,26 +144,23 @@
         bg:transparent::scrollbar-corner
       `,
     },
-    topbar: {
+    header: {
       '': literal.$`
-        z:topbar rel top:0
-        w:full h:topbar bg:bg-topbar
+        z:header top:0
+        w:full h:header bg:theme
         opacity:1!:hover
-        ~opacity|.2s
+        ~.2s
 
         {fixed}@<sm
-        {mt:topbar}+*@<sm
+        {mt:header}+*@<sm
       `,
       '-fixed': literal.$`
-        fixed! {mt:topbar}+*
-      `,
-      '-fade': literal.$`
-        opacity:.5
+        fixed! {mt:header}+*
       `,
     },
     container: {
       '': literal.$`
-        mx:auto mb:4x p:1x max-w:xl
+        mx:auto p:1x max-w:xl
       `,
     },
     link: {
@@ -200,23 +197,23 @@
     },
     card: {
       '': literal.$`
-        rel my:2x p:2x|3x r:1x
+        my:2x p:2x|3x
+        r:1x overflow:hidden
         bg:bg-box
-        shadow:0|4|8|B-50/.08
-        overflow:hidden
+        shadow:lg
       `,
     },
     accordion: {
       '': literal.$`
-        rel flex flex:wrap
+        flex flex:wrap
         {w:full}>*
         {z:-1;hide;abs;0x0;opacity:0}>input
-        {rel;pointer}>label
 
         {~transform|.2s}>label_tk-icon
         {rotate(-180deg)}>input:checked~label_tk-icon
       `,
       title: literal.$`
+        rel pointer
         {content:'+';abs;right:1x}:after
         :checked~{content:'-'}:after
       `,

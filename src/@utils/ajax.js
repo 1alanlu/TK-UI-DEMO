@@ -141,22 +141,24 @@
   }
 
   const url = {
+    github: 'https://zhongyoulu.github.io/TK-UI-DEMO',
+    codeSandbox: 'https://r0fu9s.csb.app',
     get isDev() {
       return ['localhost', '127.0.0.1'].includes(window.location.hostname);
     },
     get isTest() {
-      return ['test'].includes(window.location.hostname);
+      return window.location.hostname.includes('test');
     },
     get isProd() {
       return !this.isDev && !this.isTest;
     },
     get isGithub() {
-      return ['github.io'].includes(window.location.hostname);
+      return window.location.hostname.includes('github.io');
     },
     get domain() {
       if (this.isDev) return 'http://localhost:5501';
-      if (this.isGithub) return 'https://zhongyoulu.github.io/TK-UI-DEMO';
-      return 'https://r0fu9s.csb.app'; // CodeSandbox
+      if (this.isGithub) return this.github;
+      return this.codeSandbox;
     },
   };
 

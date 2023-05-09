@@ -32,12 +32,6 @@
     '3x': 24,
     '4x': 32,
     '5x': 40,
-    '-0x': -4,
-    '-1x': -8,
-    '-2x': -16,
-    '-3x': -24,
-    '-4x': -32,
-    '-5x': -40,
     topbar: 45,
   };
 
@@ -335,10 +329,7 @@
         rel overflow:hidden user-select:none
         bg:$(skeleton-bg,transparent)
         {content:'_';invisible}:is(.skeleton--text):before
-        {content:'';abs-full;skeleton-fixBg;translateX(-100%);@shimmer|2s|infinite}::after
-      `,
-      fixBg: literal.$`
-        bg:linear-gradient(90deg,G-20/0|0%,G-20/.5|20%,G-20/.5|60%,G-20/0)
+        {content:'';abs-full;bg:linear-gradient(90deg,G-20/0|0%,G-20/.5|20%,G-20/.5|60%,G-20/0);translateX(-100%);@shimmer|2s|infinite}::after
       `,
     },
     spin: '@rotate|1.4s|linear|infinite',

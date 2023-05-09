@@ -86,7 +86,6 @@ export default class TkMedia extends LitElement {
         ${this.renderContent()}
         <slot></slot>
       </${tag}>
-      <div class="hide @shimmer|2s|infinite">fix keyframes</div>
     `;
   }
   renderContent() {

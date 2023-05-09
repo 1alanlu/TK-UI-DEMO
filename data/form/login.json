@@ -1,0 +1,49 @@
+{
+  "email": {
+    "name": "電子信箱",
+    "icon": "material-symbols:person",
+    "attrs": {
+      "type": "email",
+      "autocomplete": "email",
+      "title": "請輸入註冊E-mail",
+      "placeholder": "請輸入註冊E-mail",
+      "required": true
+    }
+  },
+  "password": {
+    "name": "密碼",
+    "icon": "material-symbols:lock",
+    "attrs": {
+      "type": "password",
+      "autocomplete": "current-password",
+      "title": "請輸入 8-16 英數密碼",
+      "placeholder": "請輸入 8-16 英數密碼",
+      "required": true,
+      "pattern": "[a-zA-Z0-9]{8,16}",
+      "minlength": 8,
+      "maxlength": 16
+    },
+    "msg": {
+      "pattern": "請輸入 8-16 英數字"
+    }
+  },
+  "verify_code": {
+    "name": "驗證碼",
+    "icon": "material-symbols:verified-user",
+    "attrs": {
+      "type": "text",
+      "autocomplete": "off",
+      "title": "請輸入右方驗證碼",
+      "placeholder": "請輸入右方驗證碼",
+      "required": true,
+      "pattern": "[0-9]{6}",
+      "inputmode": "numeric",
+      "maxlength": 6
+    },
+    "msg": {
+      "pattern": "請輸入6碼數字"
+    },
+    "wrapCls": "flex ai:center min-w:82 w:150",
+    "html": "<tk-media ratio='82/25' title='驗證碼' x-ref='verify' x-on:click='$refs.verify.img+=1' :img='window.ajaxUtil.url.domain+\"/verify/VerifyCode.aspx?\"'></tk-media>"
+  }
+}

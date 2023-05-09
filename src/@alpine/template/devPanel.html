@@ -1,55 +1,83 @@
 <!-- DEV測試用 -->
 <div
   id="devPanel"
-  x-data="{ show: false, open: true }"
-  :hide="!show"
-  :open="open"
-  :class="Object.values({
-    'main': 'hide[hide] z:devPanel fixed! left:0 bottom:0 w:full bg:bg shadow:0|0|10|B-50/.1 ~opacity|.2s opacity:.5 opacity:0.9[open] opacity:1:hover',
-    'window': '{block!;rel!;shadow:none}[window] {min-h:0;max-h:unset}[window]_#devPanel-content',
-  }).join(' ')"
-  @keyup.alt.slash.window="show = !show"
   class="accordion"
   x-id="['accordion']"
+  :hide="hide"
+  :direction="direction"
+  :draggable="direction === 'drag'"
+  :class="masterCSSLiteral.toLine({
+    '': 'z:devPanel fg:theme bg:theme-fg shadow:0|0|10|B-50/.1',
+    'transition': '~opacity|.2s opacity:.8 opacity:1:hover {opacity:0!;untouchable!}[hide]',
+    '[window]': 'z:0 block rel opacity:1 shadow:none {min-h:0;max-h:unset}_#devPanel-content {hide}_#devPanel-switch',
+    '[direction=drag]': 'abs-center w:80vw cursor:move! r:1x p:1x|2x shadow:lg',
+    '[direction=bottom]': 'fixed w:full top:unset! left:0! right:0! bottom:0! {max-h:40vh_#devPanel-content}',
+    '[direction=left]': 'fixed w:30vw max-w:600 h:100vh top:0! left:0! right:unset!',
+    '[direction=right]': 'fixed w:30vw max-w:600 h:100vh top:0! left:unset! right:0!',
+  })"
+  x-data="{
+    ...draggableData(),
+    open: false,
+    hide: false,
+    direction:'bottom',
+  }"
+  @mousedown.prevent.stop="direction === 'drag' && initDrag"
+  @keyup.alt.slash.window="hide = !hide"
 >
-  <input type="checkbox" :id="$id('accordion')" checked />
+  <input type="checkbox" :id="$id('accordion')" x-model="open" />
   <label :for="$id('accordion')">
     <!-- devPanel-switch -->
-    <div id="devPanel-switch" class="p:1x t:center pointer" @click="open=!open">
+    <div id="devPanel-switch" class="rel p:1x pointer flex center-content">
+      <div class="abs left:0 flex ai:center gap:2x">
+        <tk-button shape="circle" class="ml:2x" icon="radix-icons:external-link" type="theme" @click.stop="$store.dev.open"></tk-button>
+        <tk-radio-group :value="direction" @change="direction=$event.detail.value">
+          <tk-radio class="mr:2x" value="drag"><tk-icon icon="material-symbols:drag-pan-rounded"></tk-icon></tk-radio>
+          <tk-radio value="left"><tk-icon icon="carbon:open-panel-filled-left"></tk-icon></tk-radio>
+          <tk-radio value="bottom"><tk-icon icon="carbon:open-panel-filled-bottom"></tk-icon></tk-radio>
+          <tk-radio value="right"><tk-icon icon="carbon:open-panel-filled-right"></tk-icon></tk-radio>
+        </tk-radio-group>
+      </div>
       <div class="flex center-content">
         <span>儀錶板</span>
         <tk-icon type="arrow" :flag="0"></tk-icon>
       </div>
-      <div class="abs top:0 right:0 p:1x bg:G-20 f:bold fg:danger">
-        <span>DEV測試用 (alt+/)</span>
+      <div class="abs right:0 opacity:.7">
+        <tk-checkbox :checked="hide" @change="hide=$event.detail.checked"">(隱藏：<kbd>alt</kbd>+<kbd>/</kbd>)</tk-checkbox>
       </div>
     </div>
     <!-- devPanel-content -->
   </label>
-
   <div class="accordion-content">
-    <div id="devPanel-content" class="max-h:40vh overflow:auto scrollbar">
-      <div class="grid-cols:1 grid-cols:3@xs {p:1x}>section">
-        <section>
-          <div class="text:center">section-settings</div>
-          <template x-for="section in Object.keys($store.alpineHost.sections)" :key="section">
-            <div class="field">
-              <p>
-                <span x-text="section"></span>
-                <tk-checkbox-group>
-                  <tk-checkbox :checked="$store.alpineHost.sections[section].open" @change="$store.alpineHost.sections[section].open=$event.detail.checked">open</tk-checkbox>
-                  <tk-checkbox :checked="$store.alpineHost.sections[section].hide" @change="$store.alpineHost.sections[section].hide=$event.detail.checked">hide</tk-checkbox>
-                </tk-checkbox-group>
-              </p>
+    <div class="min-h:0 scrollbar">
+      <div id="devPanel-content" class="overflow:auto scrollbar">
+        <div class="grid-cols:1 grid-cols:3@xs {p:1x}>section">
+          <section>
+            <div class="accordion" x-id="['accordion']">
+              <input type="checkbox" :id="$id('accordion')" checked />
+              <label class="subject" :for="$id('accordion')">
+                <div class="flex center-content">
+                  <span>section-settings</span>
+                  <tk-icon type="arrow" :flag="0"></tk-icon>
+                </div>
+              </label>
+              <div class="accordion-content">
+                <div class="min-h:0">
+                  <template x-for="section in Object.keys($store.alpineHost.sections)" :key="section">
+                    <div class="field">
+                      <p>
+                        <span x-text="section"></span>
+                        <tk-checkbox-group>
+                          <tk-checkbox :checked="$store.alpineHost.sections[section].open" @change="$store.alpineHost.sections[section].open=$event.detail.checked">open</tk-checkbox>
+                          <tk-checkbox :checked="$store.alpineHost.sections[section].hide" @change="$store.alpineHost.sections[section].hide=$event.detail.checked">hide</tk-checkbox>
+                        </tk-checkbox-group>
+                      </p>
+                    </div>
+                  </template>
+                </div>
+              </div>
             </div>
-          </template>
-        </section>
-        <section>
-          <div class="text:center">設定2</div>
-        </section>
-        <section>
-          <div class="text:center">設定3</div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   </div>

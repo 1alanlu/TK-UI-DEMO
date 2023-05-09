@@ -63,6 +63,20 @@ window.masterCSSOnload = () => {
     return `${parent || ''}{${classes}}${selector}${mq || ''}` + (otherGroup.length ? ' ' + otherGroup.join(' ') : '');
   };
 
+  const toLine = (obj, showLog) => {
+    const classes = Object.entries(obj).reduce((cls, [selector, classes]) => {
+      if (['_', '>', '~', '+'].includes(selector.charAt(selector.length - 1))) {
+        classes = group({ parent: selector, selector: '', cls: classes });
+      } else if (['_', '>', '~', '+', ':', '[', '@'].includes(selector[0])) {
+        classes = group({ selector, cls: classes });
+      }
+
+      return cls.concat(classes);
+    }, []);
+    if (showLog) console.log(classes);
+    return classes.join(' ');
+  };
+
   class MasterTheme {
     constructor(ThemeAPI) {
       this.ThemeAPI = ThemeAPI;
@@ -90,5 +104,5 @@ window.masterCSSOnload = () => {
     }
   }
 
-  return { literal: { $: literal, group: group }, MasterTheme };
+  return { literal: { $: literal, group, toLine }, MasterTheme };
 });

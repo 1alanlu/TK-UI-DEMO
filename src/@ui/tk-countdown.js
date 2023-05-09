@@ -46,11 +46,11 @@ export class TkCountdown extends LitElement {
   render() {
     return html`
       <div
-        class=${Object.values({
-          main: 'flex center-content lh:1 f:inherit f:bolder t:center user-select:none',
-          units: '{box:border;p:1x;flex:1;inline-flex;center-content}>div',
+        class=${masterCSSLiteral.toLine({
+          '': 'flex center-content {flex:1}>div lh:1 f:inherit f:bolder t:center user-select:none',
+          /*units*/ '>div': 'box:border p:1x inline-flex center-content',
           cls: unsafeCSS(this.cls || ''),
-        }).join(' ')}
+        })}
       >
         ${map(this.unit, (unit, idx) => {
           const data = this._digits[unit];

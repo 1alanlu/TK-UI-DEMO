@@ -28,11 +28,11 @@ export class TkIcon extends LitElement {
   render() {
     return html`
       <div
-        class=${Object.values({
-          main: 'flex center-content f:inherit min-w:2x min-h:2x',
-          gap: ':host(:not(:empty))_{gap:1x}',
+        class=${masterCSSLiteral.toLine({
+          '': 'flex center-content f:inherit min-w:2x min-h:2x',
+          ':host(:not(:empty))_': 'gap:1x',
           cls: unsafeCSS(this.cls || ''),
-        }).join(' ')}
+        })}
       >
         <slot name="pre"></slot>
         ${this.renderIcon()}

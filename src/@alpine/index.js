@@ -19,7 +19,37 @@
   script.src = `https://unpkg.com/alpinejs@${version}/dist/cdn.min.js`;
   document.head.appendChild(script);
 
-  const globalData = () => {};
+  const globalData = () => {
+    Alpine.data('draggableData', () => ({
+      dragStartX: 0,
+      dragStartY: 0,
+      initialX: 0,
+      initialY: 0,
+      dragListeners: null,
+      initDrag(e) {
+        this.dragStartX = e.clientX;
+        this.dragStartY = e.clientY;
+        this.initialX = this.$el.offsetLeft;
+        this.initialY = this.$el.offsetTop;
+        this.dragListeners = window.objUtil.mapListener([
+          [document, 'mousemove', this.dragging.bind(this)],
+          [document, 'mouseup', this.stopDragging.bind(this)],
+        ]);
+      },
+      dragging(e) {
+        const dx = e.clientX - this.dragStartX;
+        const dy = e.clientY - this.dragStartY;
+        this.$el.style.left = this.initialX + dx + 'px';
+        this.$el.style.top = this.initialY + dy + 'px';
+        console.log(this.$el.style.left, this.$el.style.top);
+      },
+      stopDragging() {
+        this.dragListeners.forEach((removeEventListener) => {
+          removeEventListener();
+        });
+      },
+    }));
+  };
   const globalBind = () => {
     Alpine.bind('SomeButton', () => ({
       type: 'button',
@@ -96,18 +126,25 @@
     // ----------------------------------------------------------------
     // Dev
     // ----------------------------------------------------------------
-    Alpine.store('devPanel', function (devPanelUrl) {
-      // window.alpineHost = Alpine.mergeProxies(document.getElementById('app')._x_dataStack);
-      window.alpineHost = Alpine.evaluate(document.getElementById('app'), '$data');
-      Alpine.store('alpineHost', window.alpineHost);
+    Alpine.store('dev', {
+      panel(devPanelUrl) {
+        // window.alpineHost = Alpine.mergeProxies(document.getElementById('app')._x_dataStack);
+        window.alpineHost = Alpine.evaluate(document.getElementById('app'), '$data');
+        Alpine.store('alpineHost', window.alpineHost);
 
-      window.devPanelUrl = devPanelUrl;
-      window.ajaxUtil.getTemplate(document.body, window.devPanelUrl);
-      // window.open(
-      //   window.ajaxUtil.url.domain + '/src/@alpine/template/open.html',
-      //   'alpineDev',
-      //   'height=600,width=768,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'
-      // );
+        window.devPanelUrl = devPanelUrl;
+        window.ajaxUtil.getTemplate(document.body, window.devPanelUrl);
+      },
+      open() {
+        window.open(
+          window.ajaxUtil.url.domain + '/src/@alpine/template/open.html',
+          'alpineDev',
+          'height=600,width=768,top=0,left=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'
+        );
+      },
+      grid() {
+        window.ajaxUtil.getTemplate(document.body, window.ajaxUtil.url.domain + '/src/@alpine/template/grid.html');
+      },
     });
 
     Alpine.store('darkMode', {

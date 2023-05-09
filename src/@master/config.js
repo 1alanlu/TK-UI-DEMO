@@ -63,7 +63,7 @@
         waring: '#FFA344',
         danger: '#FF7369',
         link: '#529CCA',
-        theme: { '': '#333333' },
+        theme: { '': '#333333', fg: '#EEEEEE' },
         fg: { '': '#EEEEEE' },
         bg: { '': '#CCCCCC', box: '#777777', btn: '#777777' },
       },
@@ -126,13 +126,15 @@
 
   const literal = window.masterCSSLiteral;
   const cls = {
+    // 一般初始
     normal: {
-      '': literal.$`
-        m:0 p:0 f:16 lh:1.4 font-family:$(font)
-        {m:0}_:where(p)
-        {m:0}_headings
-      `,
+      '': literal.toLine({
+        '': 'm:0 p:0 f:16 lh:1.4 font-family:$(font)',
+        '_:where(p),_headings': 'm:0',
+        '_:where(kbd)': 'mx:0x p:0x r:0x f:12 fg:B-30 bg:W-50 b:1|solid|B-30/.5 shadow:sm',
+      }),
     },
+    // 滾動軸
     scrollbar: {
       '': literal.$`
         {w:1x;h:1x}::scrollbar
@@ -144,57 +146,55 @@
         bg:transparent::scrollbar-corner
       `,
     },
+    // 頁首
     header: {
-      '': literal.$`
-        z:header top:0
-        w:full h:header bg:theme
-        opacity:1!:hover
-        ~.2s
-
-        {fixed}@<sm
-        {mt:header}+*@<sm
-      `,
-      '-fixed': literal.$`
-        fixed! {mt:header}+*
-      `,
+      '': literal.toLine({
+        '': 'z:header top:0 w:full h:header bg:theme ~.2s opacity:1!:hover',
+        '@<sm': 'fixed {mt:header}+*_$',
+      }),
+      '-fixed': literal.toLine({
+        '': 'fixed!',
+        '+*': 'mt:header',
+      }),
     },
+    // 容器
     container: {
       '': literal.$`
         mx:auto p:1x max-w:xl
       `,
     },
+    // 連結
     link: {
-      '': literal.$`
-        rel inline-flex ai:center gap:5
-        ~color|.2s fg:link/.7:hover fg:link:active
-        text-decoration:none
-        {content:'';abs;bottom:0.1em;w:full;bb:1|solid}::before
-      `,
+      '': literal.toLine({
+        '': 'rel inline-flex ai:center gap:5 fg:link text-decoration:none',
+        transition: '~.2s fg:link/.8:hover fg:link/.6:active',
+        '::before': "content:'' abs bottom:0.1em w:full bb:1|solid",
+      }),
     },
+    // 題目
     subject: {
-      '': literal.$`
-        flex center-content gap:2x
-        {m:0}_p
-        {flex:1;content:'';bt:1|solid;opacity:.2}::after,::before
-      `,
-      block: literal.$`
-        rel mx:auto
-        mb:80 mb:56@<2xs
-        py:18 py:12@<sm
-        max-w:424 max-w:240@<2xs
-        fg:theme t:center white-space:nowrap
-        {f:32;f:bold;lh:35px}>h2
-        {f:20;lh:28px}>h2@<2xs
-
-        {pt:10;f:18;f:regular;lh:25px;color:#999999}>h3
-        {pt:4;f:14;lh:20px}>h3@<2xs
-
-        {content:'';abs;top:0;left:0;w:116;h:1;bg:theme/.56}:before
-        {content:'';abs;bottom:0;right:0;w:116;h:1;bg:theme/.56}:after
-        {w:100}:before@<sm
-        {w:100}:after@<sm
-      `,
+      '': literal.toLine({
+        '': 'flex center-content gap:2x {flex:1}::before,::after',
+        '::before,::after': "content:'' bt:1|solid opacity:.2",
+      }),
+      block: literal.toLine({
+        '': 'rel mx:auto mb:80 py:18 max-w:424 fg:theme t:center white-space:nowrap',
+        '@<sm': 'py:12',
+        '@<2xs': 'mb:56 max-w:240',
+        '::before,::after': "content:'' abs w:116 h:1 bg:theme/.56",
+        '::before': 'top:0 left:0 {w:100}@<sm',
+        '::after': 'bottom:0 right:0 {w:100}@<sm',
+        '>h2': literal.toLine({
+          '': 'f:bold f:32 lh:35px',
+          '@<2xs': 'f:20 lh:28px',
+        }),
+        '>h3': literal.toLine({
+          '': 'pt:10 f:18 f:regular lh:25px fg:G-50',
+          '@<2xs': 'pt:4 f:14 lh:20px',
+        }),
+      }),
     },
+    // 卡片
     card: {
       '': literal.$`
         my:2x p:2x|3x
@@ -203,47 +203,70 @@
         shadow:lg
       `,
     },
+    // 手風琴
     accordion: {
-      '': literal.$`
-        flex flex:wrap
-        {w:full}>*
-        {z:-1;hide;abs;0x0;opacity:0}>input
-
-        {~transform|.2s}>label_tk-icon
-        {rotate(-180deg)}>input:checked~label_tk-icon
-      `,
-      title: literal.$`
-        rel pointer
-        {content:'+';abs;right:1x}:after
-        :checked~{content:'-'}:after
-      `,
-      content: literal.$`
-        grid grid-template-rows:0fr opacity:0
-
-        :checked~{grid-template-rows:1fr;opacity:1;py:1x}
-        ~.2s transition-property:padding,grid-template-rows,opacity
-        overflow:hidden
-      `,
+      '': literal.toLine({
+        '': 'flex flex:wrap',
+        '>*': 'w:full',
+        // Toggle (hide)
+        '>input': literal.toLine({
+          '': 'z:-1 hide abs 0x0 opacity:0',
+          ':checked~label_tk-icon[type=arrow]': 'rotate(-180deg)',
+        }),
+        // Arrow Icon
+        '>label_tk-icon[type=arrow]': '~transform|.2s',
+      }),
+      // 標題
+      title: literal.toLine({
+        '': 'rel pointer',
+        '::after': literal.toLine({
+          '': "content:'+' abs right:1x",
+          ':checked~': "content:'-'",
+        }),
+      }),
+      // 內容
+      content: literal.toLine({
+        '': 'grid grid-template-rows:0fr opacity:0 overflow:hidden',
+        transition: '~.2s transition-property:grid-template-rows,opacity,padding',
+        ':checked~': 'grid-template-rows:1fr opacity:1 py:1x',
+      }),
     },
+    // 輸入框
     input: {
-      '': literal.$`
-        box:border overflow:hidden
-        rel flex ai:center jc:space-between
-        r:0x h:4x
-        fg:fg bg:bg-box b:1|solid|G-50
-        ~.2s
-
-        {box:border;p:0x|1x;full;f:inherit;fg:inherit;bg:none;b:none;outline:none;appearance:none}>input
-        {fg:G-40;~.2s}>input::placeholder
-        {opacity:0}>input:focus::placeholder
-        {translateY(-100%)}>input:not(:empty)::placeholder
-
-        {border-color:danger}[invalid]
-        {border-color:success}[valid]
-        {fg:G-40}_.input-icon
-        {fg:danger}[invalid]_.input-icon
-        {fg:success}[valid]_.input-icon
+      '': literal.toLine({
+        '': `
+          box:border rel r:0x overflow:hidden
+          flex ai:center jc:space-between h:4x
+          fg:fg bg:bg-box b:1|solid|fg/.5
+          ~.2s
+        `,
+        '[invalid]': 'border-color:danger {fg:danger}_.input-icon',
+        '[valid]': 'border-color:success {fg:success}_.input-icon',
+        '_.input-icon': 'fg:fg/.5',
+        '>input': literal.toLine({
+          '': 'box:border p:0x|1x full f:inherit fg:inherit bg:none b:none outline:none appearance:none',
+          '::placeholder': 'fg:fg/.5;~.2s',
+          ':focus::placeholder': 'opacity:0',
+          ':not(:empty)::placeholder': 'translateY(-100%)',
+        }),
+      }),
+      // 圖示
+      icon: literal.$`
+        block abs-center-y left:1x
+        f:3x
+        .input_{pl:4x}~input
       `,
+      //
+      title: literal.$`
+        mb:1x {content:'*';fg:danger}[required]::before
+      `,
+      // 提示訊息
+      msg: literal.$`
+        f:12 fg:fg/.7 overflow:hidden
+        ~.2s max-h:0 opacity:0 invisible
+        {mt:0x;max-h:4x;opacity:1;visible}[show]
+      `,
+      // TODO: Placeholder
       label: literal.$`
         abs top:2x left:1x
         f:16 fg:fg/.5
@@ -253,30 +276,18 @@
         ~.2s
         untouchable
       `,
+      // TODO:
       focusBg: literal.$`
         z:-1 abs-full bg:fg/.05
         transform-origin:left
         transform:scaleX(0)
       `,
-      icon: literal.$`
-        block abs-center-y left:1x
-        f:24
-        .input_{pl:4x}~input
-      `,
-      title: literal.$`
-        mb:1x {content:'*';fg:danger}[required]::before
-      `,
-      msg: literal.$`
-        overflow:hidden
-        f:12 color:fg/.7
-        ~.2s
-        max-h:0 opacity:0 invisible
-        {mt:0x;max-h:30;opacity:1;visible}[show]
-      `,
     },
+    // 欄位
     field: {
       '': literal.$`{flex;ai:center}>p {flex:0|0|$(w,30%);f:bold}>p>span:nth(1)`,
     },
+    // 清單
     list: {
       '': literal.$`
         lh:1.4;
@@ -295,6 +306,7 @@
         .list_{content:unset!}_li::before
       `,
     },
+    // 表格
     table: {
       head: literal.$`
         grid-cols:$(cols,6)
@@ -321,14 +333,16 @@
         {p:0x}>div@<sm
       `,
     },
+    // 骨架屏
     skeleton: {
       '': literal.$`
         rel overflow:hidden user-select:none
         bg:$(skeleton-bg,transparent)
         {content:'_';invisible}:is(.skeleton--text):before
-        {content:'';abs-full;bg:linear-gradient(90deg,G-20/0|0%,G-20/.5|20%,G-20/.5|60%,G-20/0);translateX(-100%);@shimmer|2s|infinite}::after
+        {content:'';abs-full;bg:linear-gradient(90deg,bg-box/.1|0%,bg-box/.5|20%,bg-box/.5|60%,bg-box/.1);translateX(-100%);@shimmer|2s|infinite}::after
       `,
     },
+    // 旋轉
     spin: '@rotate|1.4s|linear|infinite',
   };
 

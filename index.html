@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UI DEMO</title>
-    <link rel="icon" type="image/x-icon" href="https://fakeimg.pl/50/ffffff/?text=logo" />
+    <link rel="icon" type="image/x-icon" href="./favicon.png" />
 
     <!-- Utils -->
     <script defer src="./src/@utils/obj.js"></script>
@@ -50,7 +50,7 @@
       const getData = function () {
         return {
           search: '',
-          sections: null,
+          sections: {},
           loading: { sections: null },
           async init() {
             this.$watch('search', (search) => {
@@ -58,13 +58,12 @@
                 settings.hide = !section.includes(search.toLowerCase());
               });
             });
+            if (true || !window.ajaxUtil.url.isProd) {
+              this.$store.dev.grid();
+              this.$store.dev.panel(window.ajaxUtil.url.domain + '/src/@alpine/template/devPanel.html');
+            }
 
             await this.initSections();
-
-            if (true || !window.ajaxUtil.url.isProd) {
-              window.ajaxUtil.getTemplate(document.body, window.ajaxUtil.url.domain + '/src/@alpine/template/grid.html');
-              this.$store.devPanel(window.ajaxUtil.url.domain + '/src/@alpine/template/devPanel.html');
-            }
           },
           async initSections() {
             this.loading.sections = true;
@@ -80,7 +79,7 @@
               window.ajaxUtil.setTemplate(this.$refs.sections, section.value);
             });
             this.$refs.sections.style.opacity = 1;
-            window.TkMessage.success('Sections')
+            window.TkMessage.success('Sections');
             this.loading.sections = false;
           },
         };
@@ -115,7 +114,7 @@
   <body class="normal bg:#eee @" x-data="getData">
     <!-- Header -->
     <header
-      class="header header--fixed flex ai:center {opacity:.8;shadow:md}.header--fade"
+      class="header header--fixed flex ai:center {opacity:.9;shadow:md}.header--fade"
       x-data="{
           transparentBar: function(){
             var st = window.scrollY || window.pageYOffset;
@@ -125,26 +124,26 @@
       @scroll.window="transparentBar"
     >
       <div class="container w:full py:0 flex flex:wrap ai:center jc:space-between">
-        <div class="flex ai:center">
+        <div class="flex:1 flex ai:center">
           <!-- ICON -->
           <div class="flex ai:center opacity:0.8:hover ~opacity|.2s pointer">
             <div class="w:4x h:4x r:0x overflow:hidden">
-              <tk-media img="https://fakeimg.pl/50/ffffff/?text=logo" prevented-lazy prevented-skeleton></tk-media>
+              <tk-media img="./favicon.png" prevented-lazy prevented-skeleton></tk-media>
             </div>
-            <p class="ml:2x fg:theme-fg">UI DEMO</p>
-          </div>
-          <!-- SEARCH -->
-          <div class="input ml:5x opacity:.5 opacity:.8:hover ~opacity|.2s">
-            <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
-            <input type="search" placeholder="Search" x-model.debounce="search" />
+            <p class="ml:2x ml:1x@<2xs fg:theme-fg hide@<2xs">UI DEMO</p>
           </div>
         </div>
         <div class="flex">
+          <!-- SEARCH -->
+          <div class="input mr:3x mr:1x@<xs opacity:.5 opacity:.8:hover ~opacity|.2s w:170@<xs w:120@<3xs">
+            <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
+            <input type="search" placeholder="Search" x-model.debounce="search" />
+          </div>
           <div>
             <tk-button type="theme" shape="circle" icon="ph:github-logo" href="https://github.com/zhongyoulu/TK-UI-DEMO"></tk-button>
             <tk-button type="theme" shape="circle" icon="ph:codesandbox-logo" href="https://codesandbox.io/s/github/zhongyoulu/TK-UI-DEOM"></tk-button>
           </div>
-          <tk-theme class="ml:2x" @click.stop @theme="window.TkMessage.success('theme: ' + $event.detail.current)"></tk-theme>
+          <tk-theme class="ml:2x ml:1x@<2xs" @click.stop @theme="window.TkMessage.success('theme: ' + $event.detail.current)"></tk-theme>
         </div>
       </div>
     </header>

@@ -150,9 +150,13 @@
     get isProd() {
       return !this.isDev && !this.isTest;
     },
+    get isGithub() {
+      return ['github.io'].includes(window.location.hostname);
+    },
     get domain() {
       if (this.isDev) return 'http://localhost:5501';
-      return this.isTest ? 'https://r0fu9s.csb.app' : 'https://r0fu9s.csb.app';
+      if (this.isGithub) return 'https://zhongyoulu.github.io/TK-UI-DEMO';
+      return 'https://r0fu9s.csb.app'; // CodeSandbox
     },
   };
 

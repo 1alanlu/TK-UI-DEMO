@@ -21,7 +21,7 @@
     hide: false,
     direction:'bottom',
   }"
-  @mousedown.prevent.stop="direction === 'drag' && initDrag"
+  @mousedown.prevent.stop="direction === 'drag' && startDrag"
   @keyup.alt.slash.window="hide = !hide"
 >
   <input type="checkbox" :id="$id('accordion')" x-model="open" />

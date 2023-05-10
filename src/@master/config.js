@@ -339,19 +339,21 @@
     // 骨架屏
     skeleton: {
       '': literal.$`
-        rel overflow:hidden user-select:none
-        bg:$(skeleton-bg,transparent)
-        {content:'_';invisible}:is(.skeleton--text):before
-        {content:'';abs-full;bg:linear-gradient(90deg,bg-box/.1|0%,bg-box/.5|20%,bg-box/.5|60%,bg-box/.1);translateX(-100%);@shimmer|2s|infinite}::after
+        bg:linear-gradient(270deg,bg-box/.4,bg-box/.2,bg-box/.2,bg-box/.4)
+        background-size:400%|100%
+        @skeletonWave|2.5s|linear|infinite
       `,
+      pseudo: literal.toLine({
+        '': 'rel bg:$(skeleton-bg,inherit)',
+        '::after': "content:'' abs-full skeleton",
+      }),
     },
     // 旋轉
     spin: '@rotate|1.4s|linear|infinite',
   };
 
   const keyframes = {
-    shimmer: { to: { transform: 'translateX(100%)' } },
-    skeletonWave: { from: { backgroundPosition: '200% 0' }, to: { backgroundPosition: '-200% 0' } },
+    skeletonWave: { from: { 'background-position': '200% 0' }, to: { 'background-position': '-200% 0' } },
     rollIn: { from: { transform: 'translateY(-100%)' }, to: { transform: 'translateY(0)' } },
   };
 

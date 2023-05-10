@@ -26,7 +26,7 @@
       initialX: 0,
       initialY: 0,
       dragListeners: null,
-      initDrag(e) {
+      startDrag(e) {
         this.dragStartX = e.clientX;
         this.dragStartY = e.clientY;
         this.initialX = this.$el.offsetLeft;
@@ -50,19 +50,7 @@
       },
     }));
   };
-  const globalBind = () => {
-    Alpine.bind('SomeButton', () => ({
-      type: 'button',
-
-      '@click'() {
-        this.doSomething();
-      },
-
-      ':disabled'() {
-        return this.shouldDisable;
-      },
-    }));
-  };
+  const globalBind = () => {};
 
   const globalStore = () => {
     // ----------------------------------------------------------------

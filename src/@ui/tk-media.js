@@ -16,7 +16,7 @@ const cls = {
       .portrait_{w:auto;h:full}
       untouchable
       ~.2s transition-property:opacity,visibility
-      .skeleton_{opacity:0;invisible}
+      .skeleton-pseudo_{opacity:0;invisible}
       hide[hide]
     `,
   },
@@ -101,7 +101,7 @@ export default class TkMedia extends LitElement {
         class=${Object.values({
           main: 'media',
           ratio: `$w:${w} $h:${h}`,
-          skeleton: this.preventedSkeleton ? '' : this.skeleton || !this._loaded ? 'skeleton' : '',
+          skeleton: this.preventedSkeleton ? '' : this.skeleton || !this._loaded ? 'skeleton-pseudo' : '',
           portrait: this._portrait ? 'portrait' : '',
           coverBg: this._ytID ? '$skeleton-bg:black' : '',
           keepCover: this._loadingVideo ? '{opacity:1!;visible!}_img' : '',

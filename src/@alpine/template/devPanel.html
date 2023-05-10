@@ -9,7 +9,7 @@
   :class="masterCSSLiteral.toLine({
     '': 'z:devPanel fg:theme bg:theme-fg shadow:0|0|10|B-50/.1',
     'transition': '~opacity|.2s opacity:.8 opacity:1:hover {opacity:0!;untouchable!}[hide]',
-    '[window]': 'z:0 block rel opacity:1 shadow:none {min-h:0;max-h:unset}_#devPanel-content {hide}_#devPanel-switch',
+    '[window]': 'z:0 block! rel! opacity:1 shadow:none {min-h:0;max-h:unset;}_#devPanel-content {hide}_#devPanel-switch {accordion-content--open}>.accordion-content',
     '[direction=drag]': 'abs-center w:80vw cursor:move! r:1x p:1x|2x shadow:lg',
     '[direction=bottom]': 'fixed w:full top:unset! left:0! right:0! bottom:0! {max-h:40vh_#devPanel-content}',
     '[direction=left]': 'fixed w:30vw max-w:600 h:100vh top:0! left:0! right:unset!',

@@ -225,11 +225,14 @@
         }),
       }),
       // 內容
-      content: literal.toLine({
-        '': 'grid grid-template-rows:0fr opacity:0 overflow:hidden',
-        transition: '~.2s transition-property:grid-template-rows,opacity,padding',
-        ':checked~': 'grid-template-rows:1fr opacity:1 py:1x',
-      }),
+      content: {
+        '': literal.toLine({
+          '': 'grid grid-template-rows:0fr opacity:0 overflow:hidden',
+          transition: '~.2s transition-property:grid-template-rows,opacity,padding',
+          ':checked~': 'accordion-content--open',
+        }),
+        '-open': 'grid-template-rows:1fr opacity:1 py:1x',
+      },
     },
     // 輸入框
     input: {

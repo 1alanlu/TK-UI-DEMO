@@ -49,7 +49,14 @@
     danger: '#E03E3E',
     info: '#2F80ED',
     link: '#0F62FE',
-
+    primary: 'brown-60', //主色，品牌的主要色彩
+    secondary: 'pink-70', //輔色，品牌的輔助色彩
+    body: '#EEEEEE', //主體色，用於整體網頁的背景色
+    object: '#FEFEFE', //物件色，用於卡片及區塊化元素的背景色
+    accent: '#333333', //強調色，強調目前作用中的連結及狀態，和背景形成強烈對比
+    major: '#999999', //重要色，用於主標題、次標題、導航或微強調字段，和背景形成高對比
+    content: '#333333', //內容色，適合於內文閱讀的前景色，柔和於背景
+    silence: 'gray-80', //禁用色
     theme: { '': 'brown-60', fg: '#FFFFFF' },
     fg: { '': '#333333' },
     bg: { '': '#FEFEFE', box: '#FEFEFE', btn: '#FEFEFE' },
@@ -129,8 +136,10 @@
     // 一般初始
     normal: {
       '': literal.toLine({
-        '': 'm:0 p:0 f:16 lh:1.4 font-family:$(font)',
+        '': 'box:border-box m:0 p:0 f:16 lh:1.4 font-family:$(font)',
+        '::after,::before': 'box:border-box',
         '_:where(p),_headings': 'm:0',
+        '_:where(b,strong)': 'f:bolder',
         '_:where(kbd)': 'mx:0x p:0x r:0x f:12 fg:B-30 bg:W-50 b:1|solid|B-30/.5 shadow:sm',
       }),
     },

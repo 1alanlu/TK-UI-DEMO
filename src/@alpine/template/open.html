@@ -15,14 +15,16 @@
     <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.browser.js"></script>-->
     <script defer src="../../@master/helpers.js"></script>
     <script defer src="../../@master/config.js"></script>
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@master/normal.css@2.0.0-beta.150/dist/index.css" />
     <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs" />
     <script type="module">
       import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs';
-      window.masterTheme = new MasterTheme(Theme);
-      window.masterCSSConfig = window.objUtil.merge(window.masterCSSConfig, {
+      window.mcssTheme = new MasterTheme(Theme);
+      window.mcssConfig = window.objUtil.merge(window.mcssConfig, {
         colors: {},
       });
-      window.masterCSS = new MasterCSS(window.masterCSSConfig);
+      window.masterCSS = new MasterCSS(window.mcssConfig);
+      window.mcssLoaded();
     </script>
 
     <!-- UI -->
@@ -40,7 +42,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
 
     <!-- Alpine Js -->
-    <script defer src="../index.js" version="3.12.0" plugins="mask,collapse"></script>
+    <script defer src="../index.js" version="3.12.0" plugins="mask,intersect,persist,focus,collapse,morph"></script>
     <script>
       document.addEventListener('alpine:init', () => {
         Alpine.store('alpineHost', opener.alpineHost);

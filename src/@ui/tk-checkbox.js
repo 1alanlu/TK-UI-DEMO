@@ -1,6 +1,6 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const cssLiteral = window.masterCSSLiteral;
+const cssLiteral = window.mcssLiteral;
 const cls = {
   label: cssLiteral.$`
     box:border outline:0 pointer
@@ -32,7 +32,7 @@ const cls = {
 export class TkCheckbox extends LitElement {
   static styles = css`
     :host {
-      --theme: ${unsafeCSS(window.masterCSSConfig.colors['G'][50])};
+      --theme: ${unsafeCSS(window.mcssConfig.colors['G'][50])};
       display: inline-block;
       font-size: 14px;
       -webkit-tap-highlight-color: transparent;
@@ -84,18 +84,18 @@ export class TkCheckbox extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   // ----------------------------------------------------------------
   // # Methods
@@ -124,7 +124,7 @@ export class TkCheckboxGroup extends LitElement {
       transition: opacity 0.2s;
     }
     ::slotted(tk-checkbox:not(:first-child)) {
-      margin-left: ${unsafeCSS(window.masterCSSConfig.values['1x']+'px')};
+      margin-left: ${unsafeCSS(window.mcssConfig.values['1x']+'px')};
     }
   `;
   static properties = {

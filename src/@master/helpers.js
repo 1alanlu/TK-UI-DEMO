@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------
 // # Events
 // ----------------------------------------------------------------
-window.masterCSSOnload = () => {
+window.mcssLoaded = () => {
   document.querySelectorAll('[m-cloak]').forEach((dom) => dom.removeAttribute('m-cloak'));
 };
 
@@ -10,7 +10,7 @@ window.masterCSSOnload = () => {
 // ----------------------------------------------------------------
 (function (start) {
   const helpers = start();
-  window.masterCSSLiteral = helpers.literal;
+  window.mcssLiteral = helpers.literal;
   window.MasterTheme = helpers.MasterTheme;
 })(function () {
   const literal = (strings, ...tokens) => {
@@ -57,12 +57,9 @@ window.masterCSSOnload = () => {
         }
       }
     });
-
     const classes = unitArr.join(';');
-
     return `${parent || ''}{${classes}}${selector}${mq || ''}` + (otherGroup.length ? ' ' + otherGroup.join(' ') : '');
   };
-
   const toLine = (obj, showLog) => {
     const classes = Object.entries(obj).reduce((cls, [selector, classes]) => {
       if (['_', '>', '~', '+'].includes(selector.charAt(selector.length - 1))) {
@@ -70,7 +67,6 @@ window.masterCSSOnload = () => {
       } else if (['_', '>', '~', '+', ':', '[', '@'].includes(selector[0])) {
         classes = group({ selector, cls: classes });
       }
-
       return cls.concat(classes);
     }, []);
     if (showLog) console.log(classes);

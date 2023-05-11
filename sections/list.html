@@ -1,8 +1,8 @@
 <section class="accordion card hide[hide]" x-id="['accordion']" :hide="sections['list'].hide">
-  <input type="checkbox" :id="$id('accordion')" x-model="sections['list'].open"/>
+  <input type="checkbox" :id="$id('accordion')" x-model="sections['list'].open" />
   <label class="accordion-title" :for="$id('accordion')">LIST</label>
   <div class="accordion-content">
-    <div class="min-h:0 list">
+    <div class="min-h:0 max-h:500 overflow:auto scrollbar list">
       <ul>
         <li>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, dolor. Maxime rerum optio porro fuga corrupti iure aspernatur culpa repudiandae quisquam cum dolorem, minima tempora, nihil

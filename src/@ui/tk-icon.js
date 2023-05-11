@@ -1,5 +1,7 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
+const mcssLiteral = window.mcssLiteral;
+
 const flipMap = { v: 'vertical', h: 'horizontal' };
 
 export class TkIcon extends LitElement {
@@ -28,7 +30,7 @@ export class TkIcon extends LitElement {
   render() {
     return html`
       <div
-        class=${masterCSSLiteral.toLine({
+        class=${mcssLiteral.toLine({
           '': 'flex center-content f:inherit min-w:2x min-h:2x',
           ':host(:not(:empty))_': 'gap:1x',
           cls: unsafeCSS(this.cls || ''),
@@ -51,19 +53,19 @@ export class TkIcon extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.masterCSSConfig,
-      // ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.mcssConfig,
+      // ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   willUpdate(changedProperties) {
     if (changedProperties.has('type') || changedProperties.has('flag')) {

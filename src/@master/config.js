@@ -2,7 +2,7 @@
 // # Configure
 // ----------------------------------------------------------------
 (function (getConfig) {
-  window.masterCSSConfig = getConfig();
+  window.mcssConfig = getConfig();
 })(function () {
   // const breakpoints = {
   //   '3xs': 360,
@@ -44,35 +44,45 @@
 
   const colors = {
     ...baseColors,
+    primary: 'brown-60', //主色，品牌的主要色彩
+    secondary: 'pink-70', //輔色，品牌的輔助色彩
+    accent: '#333333', //強調色，強調目前作用中的連結及狀態，和背景形成強烈對比
+    major: '#999999', //重要色，用於主標題、次標題、導航或微強調字段，和背景形成高對比
+    body: '#EEEEEE', //主體色，用於整體網頁的背景色
+    object: '#FEFEFE', //物件色，用於卡片及區塊化元素的背景色
+    content: '#333333', //內容色，適合於內文閱讀的前景色，柔和於背景
+    silence: 'gray-80', //禁用色
+
+    // TODO: 改成上面的顏色
+    theme: { '': 'brown-60', fg: '#FFFFFF' },
+    fg: { '': '#333333' },
+    bg: { '': '#FEFEFE', box: '#FEFEFE', btn: '#FEFEFE' },
+
     success: '#269244',
     waring: '#D9730D',
     danger: '#E03E3E',
     info: '#2F80ED',
     link: '#0F62FE',
-    primary: 'brown-60', //主色，品牌的主要色彩
-    secondary: 'pink-70', //輔色，品牌的輔助色彩
-    body: '#EEEEEE', //主體色，用於整體網頁的背景色
-    object: '#FEFEFE', //物件色，用於卡片及區塊化元素的背景色
-    accent: '#333333', //強調色，強調目前作用中的連結及狀態，和背景形成強烈對比
-    major: '#999999', //重要色，用於主標題、次標題、導航或微強調字段，和背景形成高對比
-    content: '#333333', //內容色，適合於內文閱讀的前景色，柔和於背景
-    silence: 'gray-80', //禁用色
-    theme: { '': 'brown-60', fg: '#FFFFFF' },
-    fg: { '': '#333333' },
-    bg: { '': '#FEFEFE', box: '#FEFEFE', btn: '#FEFEFE' },
   };
 
   const themes = {
     light: {},
     dark: {
       colors: {
+        primary: '#333333',
+        accent: '#333333',
+        major: 'gray-80',
+        content: '#0c0c0c',
+
+        // TODO: 改成上面的顏色
+        theme: { '': '#333333', fg: '#EEEEEE' },
+        fg: { '': '#EEEEEE' },
+        bg: { '': '#CCCCCC', box: '#777777', btn: '#777777' },
+
         success: '#74A16A',
         waring: '#FFA344',
         danger: '#FF7369',
         link: '#529CCA',
-        theme: { '': '#333333', fg: '#EEEEEE' },
-        fg: { '': '#EEEEEE' },
-        bg: { '': '#CCCCCC', box: '#777777', btn: '#777777' },
       },
     },
   };
@@ -131,7 +141,7 @@
     },
   };
 
-  const literal = window.masterCSSLiteral;
+  const literal = window.mcssLiteral;
   const cls = {
     // 一般初始
     normal: {
@@ -357,8 +367,20 @@
         '::after': "content:'' abs-full skeleton",
       }),
     },
+    loader: {
+      '': literal.toLine({
+        '': `flex center-content`,
+        '::before': literal.$`
+          box:border-box
+          w:0.875em h:0.875em
+          content:'' inline-block round
+          b:0.125em|solid bb:transparent!
+          spin mr:0.5em
+        `,
+      }),
+    },
     // 旋轉
-    spin: '@rotate|1.4s|linear|infinite',
+    spin: '@rotate|1s|linear|infinite',
   };
 
   const keyframes = {

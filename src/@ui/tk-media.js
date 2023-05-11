@@ -1,16 +1,16 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing, ref, createRef, literal, staticHtml } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const cssLiteral = window.masterCSSLiteral;
+const mcssLiteral = window.mcssLiteral;
 const cls = {
   media: {
-    '': cssLiteral.$`
+    '': mcssLiteral.$`
       rel block overflow:hidden
       m:0 w:full
       {content:'';block;pt:calc($(h)/$(w)*100%);w:full}::before
     `,
   },
   img: {
-    '': cssLiteral.$`
+    '': mcssLiteral.$`
       abs-center
       {w:full;h:auto}
       .portrait_{w:auto;h:full}
@@ -159,18 +159,18 @@ export default class TkMedia extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   willUpdate(changedProperties) {
     let imgSrc = null;

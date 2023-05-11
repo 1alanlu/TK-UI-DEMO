@@ -1,12 +1,12 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing, ref, createRef } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const cssLiteral = window.masterCSSLiteral;
+const mcssLiteral = window.mcssLiteral;
 
 let messageContent = document.getElementById('message-content');
 if (!messageContent) {
   messageContent = document.createElement('div');
   messageContent.id = 'message-content';
-  messageContent.className = cssLiteral.$`
+  messageContent.className = mcssLiteral.$`
     z:message untouchable
     fixed top:1x left:0 right:0 p:1x
     flex flex:column ai:center gap:1x
@@ -16,7 +16,7 @@ if (!messageContent) {
 
 const cls = {
   message: {
-    '': cssLiteral.$`
+    '': mcssLiteral.$`
       inline-flex jc:center ai:center p:1x r:0x
       max-w:xs@md
       f:14 fg:fg word-break:break-all
@@ -86,12 +86,12 @@ export class TkMessage extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
 
     this.shadowRoot.addEventListener('transitionend', this._handleOpened);
   }
@@ -100,7 +100,7 @@ export class TkMessage extends LitElement {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   willUpdate(changedProperties) {
     if (changedProperties.has('duration')) {

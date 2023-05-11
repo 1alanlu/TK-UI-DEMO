@@ -1,13 +1,13 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const cssLiteral = window.masterCSSLiteral;
+const mcssLiteral = window.mcssLiteral;
 const cls = {
-  label: cssLiteral.$`
+  label: mcssLiteral.$`
     box:border outline:0 pointer
     flex ai:center gap:1x
   `,
   checked: {
-    '': cssLiteral.$`
+    '': mcssLiteral.$`
       box:border rel
       flex center-content round
       w:1em h:1em
@@ -20,7 +20,7 @@ const cls = {
       {box:border;content:'';abs;center;middle;w:1x;h:1x;round;bg:$(theme)}::after
       {~.2s|cubic-bezier(.12,.4,.29,1.46)|.1s}::after
     `,
-    '-default': cssLiteral.$`
+    '-default': mcssLiteral.$`
       b:1|solid|G-40
       [disabled]_{background:rgba(0,0,0,.1)}
       :not([disabled]):hover_{border-color:$(theme)}
@@ -29,7 +29,7 @@ const cls = {
       [checked]_{border-color:$(theme)}
       [checked]_{scale(1)}::after
     `,
-    '-theme': cssLiteral.$`
+    '-theme': mcssLiteral.$`
       bg:$(theme)
       {border:2|solid|white;scale(0)}::after
 
@@ -40,7 +40,7 @@ const cls = {
 export class TkRadio extends LitElement {
   static styles = css`
     :host {
-      --theme: ${unsafeCSS(window.masterCSSConfig.colors['G'][50])};
+      --theme: ${unsafeCSS(window.mcssConfig.colors['G'][50])};
       display: inline-block;
       font-size: 14px;
       -webkit-tap-highlight-color: transparent;
@@ -90,18 +90,18 @@ export class TkRadio extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   // ----------------------------------------------------------------
   // # Methods
@@ -138,7 +138,7 @@ export class TkRadioGroup extends LitElement {
       transition: opacity 0.2s;
     }
     ::slotted(tk-radio:not(:first-child)) {
-      margin-left: ${unsafeCSS(window.masterCSSConfig.values['1x'] + 'px')};
+      margin-left: ${unsafeCSS(window.mcssConfig.values['1x'] + 'px')};
     }
   `;
   static properties = {

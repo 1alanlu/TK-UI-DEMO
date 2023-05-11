@@ -13,7 +13,7 @@ export class TkTheme extends LitElement {
   }
 
   render() {
-    return html`<tk-button type="theme" shape="circle" icon=${this._icon} class=${unsafeCSS(window.masterTheme.current)} @click=${this.toggleTheme}></tk-button>`;
+    return html`<tk-button type="theme" shape="circle" icon=${this._icon} class=${unsafeCSS(window.mcssTheme.current)} @click=${this.toggleTheme}></tk-button>`;
   }
 
   // THEME_KEY = 'theme';
@@ -30,19 +30,19 @@ export class TkTheme extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.masterCSSConfig,
+      ...window.mcssConfig,
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
-    this.initTheme(window.masterTheme.current);
+    window.mcssTheme.register(this);
+    this.initTheme(window.mcssTheme.current);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   // ----------------------------------------------------------------
   // # Methods
@@ -50,7 +50,7 @@ export class TkTheme extends LitElement {
   initTheme(value) {
     this.currentTheme = value && this.themeKeys.includes(value) ? value : this.themeKeys[0];
     this._icon = this.themes[this.currentTheme];
-    window.masterTheme.switchAll(this.currentTheme);
+    window.mcssTheme.switchAll(this.currentTheme);
 
     // localStorage.setItem(this.THEME_KEY, this.currentTheme);
     // this.themeKeys.forEach((theme) => {

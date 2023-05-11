@@ -15,34 +15,17 @@
     <!-- MasterCSS -->
     <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.browser.js"></script>-->
     <script defer src="./src/@master/helpers.js"></script>
+    <script defer src="./src/@master/config.js"></script>
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@master/normal.css@2.0.0-beta.150/dist/index.css" />
     <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs" />
     <script type="module">
-      import MasterCSS, { Theme, fillColorScale } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs';
-      import config from './src/@master/master.css.js';
-
-      const filledColors = (colors) =>
-        Object.fromEntries(
-          Object.entries(colors).map(([key, value]) => {
-            if (typeof value === 'string') {
-              return [key, fillColorScale(value)];
-            } else if (typeof value === 'object') {
-              return [key, Object.fromEntries(Object.entries(value).map(([subkey, subvalue]) => [subkey, fillColorScale(subvalue)]))];
-            } else {
-              return [key, value];
-            }
-          })
-        );
-
-      console.log(config.themes.dark.colors);
-      window.masterCSSConfig = window.objUtil.merge(config, {
+      import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs';
+      window.mcssTheme = new window.MasterTheme(Theme);
+      window.mcssConfig = window.objUtil.merge(window.mcssConfig, {
         colors: {},
-        themes: {
-          light: { colors: filledColors(config.themes.light.colors) },
-          dark: { colors: filledColors(config.themes.dark.colors) },
-        },
       });
-      window.masterCSS = new MasterCSS(window.masterCSSConfig);
-      window.masterTheme = new MasterTheme(Theme);
+      window.mcss = new MasterCSS(window.mcssConfig);
+      window.mcssLoaded();
     </script>
 
     <!-- UI -->
@@ -64,7 +47,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/themes/splide-default.min.css" rel="stylesheet" /> -->
 
     <!-- AlpineJS -->
-    <script defer src="./src/@alpine/index.js" version="3.12.0" plugins="mask"></script>
+    <script defer src="./src/@alpine/index.js" version="3.12.0" plugins="mask,intersect,persist,focus,collapse,morph"></script>
     <script>
       const getData = function () {
         return {
@@ -98,7 +81,7 @@
               window.ajaxUtil.setTemplate(this.$refs.sections, section.value);
             });
             this.$refs.sections.style.opacity = 1;
-            window.TkMessage.success('Sections');
+            window.TkMessage.success('Sections loaded.');
             this.loading.sections = false;
           },
         };
@@ -152,7 +135,7 @@
             <p class="ml:2x ml:1x@<2xs fg:theme-fg hide@<2xs">UI DEMO</p>
           </div>
         </div>
-        <div class="flex">
+        <div class="flex center-content">
           <!-- SEARCH -->
           <div class="input mr:3x mr:1x@<xs opacity:.5 opacity:.8:hover ~opacity|.2s w:170@<xs w:120@<3xs">
             <tk-icon class="input-icon" icon="mdi:search"></tk-icon>
@@ -168,11 +151,15 @@
     </header>
     <!-- APP -->
     <div id="app" class="flex flex:column min-h:calc(100vh-header)">
-      <template x-if="loading.sections">
-        <tk-icon loading class="my:5x">Loading</tk-icon>
-      </template>
-      <!-- Sections -->
-      <div x-ref="sections" class="flex:1 container mb:5x opacity:0 ~opacity|.2s" x-cloak></div>
+      <div class="flex:1 overflow:hidden rel w:full pb:5x">
+        <!-- Sections -->
+        <div class="container">
+          <div class="abs-center-x top:5x" x-init="$watch('loading.sections',(loading)=>$el.classList.toggle('hide', !loading))">
+            <div class="loader fg:theme f:20">Loading...</div>
+          </div>
+          <div x-ref="sections" class="opacity:0 ~opacity|.2s"></div>
+        </div>
+      </div>
       <!-- Footer -->
       <footer class="mt:auto p:1x t:center bg:theme fg:theme-fg">© ZYL</footer>
     </div>

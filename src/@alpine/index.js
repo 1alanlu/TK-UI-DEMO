@@ -21,11 +21,13 @@
 
   const globalData = () => {
     Alpine.data('draggableData', () => ({
+      isDragging: false,
       dragStartX: 0,
       dragStartY: 0,
       initialX: 0,
       initialY: 0,
       dragListeners: null,
+
       startDrag(e) {
         this.dragStartX = e.clientX;
         this.dragStartY = e.clientY;
@@ -37,13 +39,14 @@
         ]);
       },
       dragging(e) {
+        this.isDragging = true;
         const dx = e.clientX - this.dragStartX;
         const dy = e.clientY - this.dragStartY;
         this.$el.style.left = this.initialX + dx + 'px';
         this.$el.style.top = this.initialY + dy + 'px';
-        console.log(this.$el.style.left, this.$el.style.top);
       },
       stopDragging() {
+        this.isDragging = false;
         this.dragListeners.forEach((removeEventListener) => {
           removeEventListener();
         });

@@ -1,6 +1,6 @@
 import { LitElement, html, css, unsafeCSS, nothing, ref, createRef, staticHtml, literal } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const cssLiteral = window.masterCSSLiteral;
+const cssLiteral = window.mcssLiteral;
 const cls = {
   btn: {
     '': cssLiteral.$`
@@ -150,18 +150,18 @@ export class TkButton extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   // ----------------------------------------------------------------
   // # Methods

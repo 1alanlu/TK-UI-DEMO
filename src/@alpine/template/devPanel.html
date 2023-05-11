@@ -6,14 +6,29 @@
   :hide="hide"
   :direction="direction"
   :draggable="direction === 'drag'"
-  :class="masterCSSLiteral.toLine({
-    '': 'z:devPanel fg:theme bg:theme-fg shadow:0|0|10|B-50/.1',
+  :class="mcssLiteral.toLine({
+    '': 'z:devPanel fg:theme bg:theme-fg shadow:0|0|10|B-50/.1 hide@<sm',
     'transition': '~opacity|.2s opacity:.8 opacity:1:hover {opacity:0!;untouchable!}[hide]',
-    '[window]': 'z:0 block! rel! opacity:1 shadow:none {min-h:0;max-h:unset;}_#devPanel-content {hide}_#devPanel-switch {accordion-content--open}>.accordion-content',
-    '[direction=drag]': 'abs-center w:80vw cursor:move! r:1x p:1x|2x shadow:lg',
-    '[direction=bottom]': 'fixed w:full top:unset! left:0! right:0! bottom:0! {max-h:40vh_#devPanel-content}',
-    '[direction=left]': 'fixed w:30vw max-w:600 h:100vh top:0! left:0! right:unset!',
-    '[direction=right]': 'fixed w:30vw max-w:600 h:100vh top:0! left:unset! right:0!',
+    '_#devPanel-switch': 'rel p:1x pointer flex center-content',
+    '[window]': mcssLiteral.toLine({
+      '': 'z:0 block! rel! opacity:1 shadow:none',
+      '_#devPanel-switch': 'hide',
+      '_#devPanel-content': 'min-h:0 max-h:unset',
+      '>.accordion-content': 'accordion-content--open',
+    }),
+    '[direction=drag]': mcssLiteral.toLine({
+      '': 'abs-center w:80vw cursor:move! r:1x p:1x|2x shadow:lg',
+    }),
+    '[direction=bottom]': mcssLiteral.toLine({
+      '': 'fixed w:full top:unset! left:0! right:0! bottom:0!',
+      '_#devPanel-content': 'max-h:40vh',
+    }),
+    '[direction=left]': mcssLiteral.toLine({
+      '': 'fixed w:30vw max-w:600 h:100vh top:0! left:0! right:unset!',
+    }),
+    '[direction=right]': mcssLiteral.toLine({
+      '': 'fixed w:30vw max-w:600 h:100vh top:0! left:unset! right:0!',
+    }),
   })"
   x-data="{
     ...draggableData(),
@@ -23,11 +38,12 @@
   }"
   @mousedown.prevent.stop="direction === 'drag' && startDrag"
   @keyup.alt.slash.window="hide = !hide"
+  @contextmenu.prevent
 >
   <input type="checkbox" :id="$id('accordion')" x-model="open" />
   <label :for="$id('accordion')">
     <!-- devPanel-switch -->
-    <div id="devPanel-switch" class="rel p:1x pointer flex center-content">
+    <div id="devPanel-switch">
       <div class="abs left:0 flex ai:center gap:2x">
         <tk-button shape="circle" class="ml:2x" icon="radix-icons:external-link" type="theme" @click.stop="$store.dev.open"></tk-button>
         <tk-radio-group :value="direction" @change="direction=$event.detail.value">
@@ -48,7 +64,7 @@
     <!-- devPanel-content -->
   </label>
   <div class="accordion-content">
-    <div class="min-h:0 scrollbar">
+    <div class="min-h:0">
       <div id="devPanel-content" class="overflow:auto scrollbar">
         <div class="grid-cols:1 grid-cols:3@xs {p:1x}>section">
           <section>

@@ -1,5 +1,6 @@
 import { LitElement, html, css, classMap, unsafeCSS, map } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
-const cssLiteral = window.masterCSSLiteral;
+
+const cssLiteral = window.mcssLiteral;
 const cls = {
   unit: {
     '': cssLiteral.$`
@@ -46,7 +47,7 @@ export class TkCountdown extends LitElement {
   render() {
     return html`
       <div
-        class=${masterCSSLiteral.toLine({
+        class=${mcssLiteral.toLine({
           '': 'flex center-content {flex:1}>div lh:1 f:inherit f:bolder t:center user-select:none',
           /*units*/ '>div': 'box:border p:1x inline-flex center-content',
           cls: unsafeCSS(this.cls || ''),
@@ -80,18 +81,18 @@ export class TkCountdown extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   shouldUpdate(changedProperties) {
     if (changedProperties.size === 2 && (changedProperties.has('_animeTimer') || changedProperties.has('_updateTimer'))) return false;

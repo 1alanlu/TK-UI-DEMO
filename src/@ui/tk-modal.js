@@ -1,11 +1,9 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing, map, ref, createRef } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
-// 已開啟彈窗
-const opened = [];
 
-const cssLiteral = window.masterCSSLiteral;
+const mcssLiteral = window.mcssLiteral;
 const cls = {
   modal: {
-    '': cssLiteral.$`
+    '': mcssLiteral.$`
       z:modal
       flex fixed middle center
       p:1x
@@ -15,7 +13,7 @@ const cls = {
       ~.2s|ease-out transition-property:opacity,visibility
       {opacity:1;visible}[open]
     `,
-    dialog: cssLiteral.$`
+    dialog: mcssLiteral.$`
       flex m:auto p:2x r:0x
       min-w:3xs@2xs
       w:full@<2xs
@@ -27,29 +25,32 @@ const cls = {
       [open]_{opacity:1;scale(1)}
       [open].modal--static>{scale(1.02)}
     `,
-    close: cssLiteral.$`
+    close: mcssLiteral.$`
       abs top:0 right:0 flex
       w:2x h:2x f:3x font-family:none
     `,
   },
   dialog: {
-    type: cssLiteral.$`
+    type: mcssLiteral.$`
       hide f:30 {block;mr:1x}[icon]
     `,
-    content: cssLiteral.$`
+    content: mcssLiteral.$`
       rel w:full
     `,
-    title: cssLiteral.$`
+    title: mcssLiteral.$`
       mb:1x f:24 f:bolder lh:1.2 user-select:none
     `,
-    body: cssLiteral.$`
+    body: mcssLiteral.$`
       min-h:50 overflow:auto
     `,
-    footer: cssLiteral.$`
+    footer: mcssLiteral.$`
       mt:1x t:right user-select:none
     `,
   },
 };
+
+// 已開啟彈窗
+const opened = [];
 
 export class TkModal extends LitElement {
   static styles = css``;
@@ -154,12 +155,12 @@ export class TkModal extends LitElement {
     if (this.portal && this.portal !== this.parentNode) this.portal.appendChild(this);
 
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.masterCSSConfig, { classes: cls }),
+      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
 
-    window.masterTheme.register(this);
+    window.mcssTheme.register(this);
 
     this.shadowRoot.addEventListener('transitionend', this._handleOpened);
   }
@@ -168,7 +169,7 @@ export class TkModal extends LitElement {
     super.disconnectedCallback();
     if (this.css) this.css.destroy();
 
-    window.masterTheme.unregister(this);
+    window.mcssTheme.unregister(this);
   }
   shouldUpdate(changedProperties) {
     return true;

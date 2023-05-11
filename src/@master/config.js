@@ -52,6 +52,7 @@
     object: '#FEFEFE', //物件色，用於卡片及區塊化元素的背景色
     content: '#333333', //內容色，適合於內文閱讀的前景色，柔和於背景
     silence: 'gray-80', //禁用色
+    shadow: 'B-50',
 
     // TODO: 改成上面的顏色
     theme: { '': 'brown-60', fg: '#FFFFFF' },
@@ -90,12 +91,12 @@
   const rules = {
     boxShadow: {
       values: {
-        xs: '0|1|2|0|B-50/.05',
-        sm: '0|1|3|0|B-50/.1,0|1|2|-1|B-50/.1',
-        md: '0|4|6|-1|B-50/.1,0|2|4|-2|B-50/.1',
-        lg: '0|10|15|-3|B-50/.1,0|4|6|-4|B-50/.1',
-        xl: '0|20|25|-5|B-50/.1,0 8|10|-6|B-50/.1',
-        inner: 'inset|0|2|4|0|B-50/.05',
+        xs: '0|1|2|0|shadow/.05',
+        sm: '0|1|3|0|shadow/.1,0|1|2|-1|shadow/.1',
+        md: '0|4|6|-1|shadow/.1,0|2|4|-2|shadow/.1',
+        lg: '0|10|15|-3|shadow/.1,0|4|6|-4|shadow/.1',
+        xl: '0|20|25|-5|shadow/.1,0 8|10|-6|shadow/.1',
+        inner: 'inset|0|2|4|0|shadow/.05',
         none: '0|0|#0000',
       },
     },
@@ -146,31 +147,55 @@
     // 一般初始
     normal: {
       '': literal.toLine({
-        '': 'box:border-box m:0 p:0 f:16 lh:1.4 font-family:$(font)',
-        '::after,::before': 'box:border-box',
-        '_:where(p),_headings': 'm:0',
+        '': 'box:border m:0 p:0 f:16 lh:1.4 font-family:$(font)',
+        '_:where(*)': 'box:border text-rendering:geometricPrecision b:0|solid',
+        '_::after,_::before': 'box:border',
+        '_:where(blockquote,dl,dd,hr,figure,p,button,optgroup,select,textarea,pre),_headings': 'm:0',
+        '_:where(td,legend,textarea,input,fieldset)': 'p:0',
+        '_:where(img,svg,video,canvas,audio,iframe,embed,object)': 'block',
+        '_:where(button,input,optgroup,select,textarea)': 'm:0 p:0 font-family:inherit f:100% fg:inherit bg:transparent',
+        '_:where(button,select)': 'text-transform:none',
+        '_:where(a)': 'fg:inherit text:none',
+        "_:where(a,[type='button']:not([disabled]),[role='button'],button:not([disabled]))": 'cursor:pointer',
+        '_:where(small)': 'f:80%',
         '_:where(b,strong)': 'f:bolder',
-        '_:where(kbd)': 'mx:0x p:0x r:0x f:12 fg:B-30 bg:W-50 b:1|solid|B-30/.5 shadow:sm',
+        '_:where(sub,sup)': 'rel f:75% lh:0 v:baseline',
+        '_:where(sub)': 'bottom:-.25em',
+        '_:where(sup)': 'top:-.5em',
+        '_:where(hr)': 'h:0 fg:inherit',
+        '_:where(ul,ol)': 'm:0 p:0',
+        '_:where(ul)': 'list-style:none',
+        '_:where(abbr[title])': 'text:underline|dotted',
+        '_:where(table)': 'text-indent:0 border-color:inherit',
+        '_:where(summary)': 'display:list-item',
+        '_:where(progress)': 'v:baseline',
+        '_:where(kbd)': 'mx:0x p:0x r:0x f:80% fg:B-30 bg:W-50 b:1|solid|B-30/.5 shadow:sm',
+        // '::-moz-focus-inner': 'border-style:none p:0',
+        // '::-moz-ui-invalid': 'box-shadow:none',
+        // '::-webkit-inner-spin-button,::-webkit-outer-spin-button': 'h:auto',
+        // '::-webkit-search-decoration': '-webkit-appearance:none',
+        // '::-webkit-file-upload-button': '-webkit-appearance:none font:inherit',
       }),
     },
-    // 滾動軸
+    // 滾動條
     scrollbar: {
       '': literal.$`
-        {w:1x;h:1x}::scrollbar
+        {w:8;h:8}::scrollbar
         {rounded}::scrollbar,::scrollbar-thumb
-        bg:theme/.2::scrollbar
-        bg:theme/.6::scrollbar-thumb
-        bg:theme/.8::scrollbar-thumb:hover
-        bg:theme::scrollbar-thumb:active
+        bg:primary/.2::scrollbar
+        bg:primary/.6::scrollbar-thumb
+        bg:primary/.8::scrollbar-thumb:hover
+        bg:primary::scrollbar-thumb:active
         bg:transparent::scrollbar-corner
       `,
     },
     // 頁首
     header: {
       '': literal.toLine({
-        '': 'z:header top:0 w:full h:header bg:theme ~.2s opacity:1!:hover',
+        '': 'z:header top:0 w:full h:header bg:primary header--fixed',
+        transition: '~.2s opacity:1!:hover',
         '@<sm': 'fixed {mt:header}+*_$',
-      }),
+      },true),
       '-fixed': literal.toLine({
         '': 'fixed!',
         '+*': 'mt:header',
@@ -179,7 +204,7 @@
     // 容器
     container: {
       '': literal.$`
-        mx:auto p:1x max-w:xl
+        box:border mx:auto p:1x max-w:xl
       `,
     },
     // 連結
@@ -216,11 +241,73 @@
     // 卡片
     card: {
       '': literal.$`
+        box:border
         my:2x p:2x|3x
         r:1x overflow:hidden
         bg:bg-box
         shadow:lg
       `,
+    },
+    // 按鈕
+    btn: {
+      '': literal.$`
+        box:border rel overflow:hidden
+        inline-flex center-content gap:1x
+        p:0x|1x r:inherit w:inherit h:inherit
+        f:inherit fg:$(fg,inherit) bg:$(bg,inherit)
+        t:center vertical-align:middle
+        text-transform:inherit text:none white-space:nowrap
+        b:1|solid|$(border,${baseColors['G'][50]})
+        ~.2s transition-property:color,background,border-color,box-shadow
+        pointer outline:none
+        pointer-events:all
+        untouchable>*
+
+        {z:1;fg:$(theme,theme);border-color:$(theme,theme)}:is(:not([disabled]):hover,:focus-within)
+
+        {opacity:.6;cursor:not-allowed;}:is([disabled],[readonly],[loading])
+        {bg:B-50/.1}:not([class*="btn-type--"])[disabled]
+
+        {content:'';untouchable;abs;full;middle;center;bg:$(fg,theme);opacity:0;~opacity|.2s}::before
+        {opacity:.1}:not([disabled]):active::before
+
+        :host(:empty)_{p:1x}
+      `,
+      '-ripple': literal.$`
+        {content:'';untouchable;abs;full;top:$(y,50%);left:$(x,50%);bg:no-repeat;bg:center}::after
+        {bg:theme;bg:radial-gradient(circle,bg|10%,transparent|10.01%)}::after
+        {transform:translate(-50%,-50%)|scale(10);opacity:0;~transform|.2s,opacity|.8s}::after
+        {transform:translate(-50%,-50%)|scale(0);opacity:.3;~none}:not([disabled]):active::after
+      `,
+      '-noborder': literal.$`
+        b:0 p:calc(0x+1)|calc(1x+1)!
+        :host(:empty)_{p:1x!}
+      `,
+      type: {
+        '-dashed': literal.$`border-style:dashed`,
+        '-outline': literal.$`
+          fg:$(theme,theme)! border-color:$(theme,theme)
+          {bg:$(theme,theme)!}::before
+        `,
+        '-font': literal.$`
+          btn--noborder
+          {content:unset!}::before
+        `,
+        '-flat': literal.$`
+          btn--noborder
+          {opacity:.1}:is(:not([disabled]):hover,:focus-within)::before
+          {opacity:.2!}:not([disabled]):active::before
+        `,
+        '-theme': literal.$`
+          btn-type--flat
+          fg:$(theme-fg,theme-fg)! bg:$(theme,theme)!
+          {bg:$(theme-fg,theme-fg)!}::before
+          {bg:theme;bg:radial-gradient(circle,bg|10%,transparent|10.01%)}.btn--ripple::after
+        `,
+      },
+      shape: {
+        '-circle': literal.$`round`,
+      },
     },
     // 手風琴
     accordion: {
@@ -259,15 +346,15 @@
         '': `
           box:border rel r:0x overflow:hidden
           flex ai:center jc:space-between h:4x
-          fg:fg bg:bg-box b:1|solid|fg/.5
+          fg:inherit bg:transparent b:1|solid|fg/.5
           ~.2s
         `,
         '[invalid]': 'border-color:danger {fg:danger}_.input-icon',
         '[valid]': 'border-color:success {fg:success}_.input-icon',
         '_.input-icon': 'fg:fg/.5',
         '>input': literal.toLine({
-          '': 'box:border p:0x|1x full f:inherit fg:inherit bg:none b:none outline:none appearance:none',
-          '::placeholder': 'fg:fg/.5;~.2s',
+          '': 'box:border p:0x|1x full f:inherit fg:inherit bg:transparent b:none outline:none',
+          '::placeholder': 'fg:fg/.5 ~.2s',
           ':focus::placeholder': 'opacity:0',
           ':not(:empty)::placeholder': 'translateY(-100%)',
         }),
@@ -371,7 +458,7 @@
       '': literal.toLine({
         '': `flex center-content`,
         '::before': literal.$`
-          box:border-box
+          box:border
           w:0.875em h:0.875em
           content:'' inline-block round
           b:0.125em|solid bb:transparent!

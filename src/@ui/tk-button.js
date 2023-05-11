@@ -1,69 +1,5 @@
 import { LitElement, html, css, unsafeCSS, nothing, ref, createRef, staticHtml, literal } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const cssLiteral = window.mcssLiteral;
-const cls = {
-  btn: {
-    '': cssLiteral.$`
-      box:border rel overflow:hidden
-      inline-flex center-content gap:1x
-      p:0x|1x r:inherit w:inherit h:inherit
-      f:inherit fg:$(fg,inherit) bg:$(bg,inherit)
-      t:center vertical-align:middle
-      text-transform:inherit text:none white-space:nowrap
-      b:1|solid|$(border,G-50)
-      ~.2s transition-property:color,background,border-color,box-shadow
-      pointer outline:none
-      pointer-events:all
-      untouchable>*
-
-      {z:1;fg:$(theme,theme);border-color:$(theme,theme)}:is(:not([disabled]):hover,:focus-within)
-
-      {opacity:.6;cursor:not-allowed;}:is([disabled],[readonly],[loading])
-      {bg:B-50/.1}:not([class*="btn-type--"])[disabled]
-
-      {content:'';untouchable;abs;full;middle;center;bg:$(fg,theme);opacity:0;~opacity|.2s}::before
-      {opacity:.1}:not([disabled]):active::before
-
-      :host(:empty)_{p:1x}
-    `,
-    '-ripple': cssLiteral.$`
-      {content:'';untouchable;abs;full;top:$(y,50%);left:$(x,50%);bg:no-repeat;bg:center}::after
-      {bg:theme;bg:radial-gradient(circle,bg|10%,transparent|10.01%)}::after
-      {transform:translate(-50%,-50%)|scale(10);opacity:0;~transform|.2s,opacity|.8s}::after
-      {transform:translate(-50%,-50%)|scale(0);opacity:.3;~none}:not([disabled]):active::after
-    `,
-    '-noborder': cssLiteral.$`
-      b:0 p:calc(0x+1)|calc(1x+1)!
-      :host(:empty)_{p:1x!}
-    `,
-    type: {
-      '-dashed': cssLiteral.$`border-style:dashed`,
-      '-outline': cssLiteral.$`
-        fg:$(theme,theme)! border-color:$(theme,theme)
-        {bg:$(theme,theme)!}::before
-      `,
-      '-font': cssLiteral.$`
-        btn--noborder
-        {content:unset!}::before
-      `,
-      '-flat': cssLiteral.$`
-        btn--noborder
-        {opacity:.1}:is(:not([disabled]):hover,:focus-within)::before
-        {opacity:.2!}:not([disabled]):active::before
-      `,
-      '-theme': cssLiteral.$`
-        btn-type--flat
-        fg:$(theme-fg,theme-fg)! bg:$(theme,theme)!
-        {bg:$(theme-fg,theme-fg)!}::before
-        {bg:theme;bg:radial-gradient(circle,bg|10%,transparent|10.01%)}.btn--ripple::after
-      `,
-    },
-    shape: {
-      '-circle': cssLiteral.$`round`,
-    },
-  },
-};
-
 export class TkButton extends LitElement {
   static styles = css`
     :host {
@@ -150,7 +86,8 @@ export class TkButton extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
+      ...window.mcssConfig,
+      // ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);
@@ -221,10 +158,15 @@ export class TkButtonGroup extends LitElement {
     }
   `;
   static properties = {
+    ratio: { type: Boolean, reflect: true },
+    value: { type: String, reflect: true },
+    type: { type: String, reflect: true },
     disabled: { type: Boolean },
   };
   constructor() {
     super();
+
+    this._handleClick = this.handleClick.bind(this);
   }
   get _slottedChildren() {
     const slot = this.shadowRoot.querySelector('slot');
@@ -232,6 +174,23 @@ export class TkButtonGroup extends LitElement {
   }
   render() {
     return html`<slot @slotchange=${this.handleSlotchange}></slot>`;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.shadowRoot.addEventListener('click', this._handleClick);
+  }
+  disconnectedCallback() {
+    this.shadowRoot.removeEventListener('click', this._handleClick);
+    super.disconnectedCallback();
+  }
+  handleClick(e) {
+    if (this.ratio && e.target) {
+      const el = e.target;
+      if (this.value !== el.getAttribute('value')) {
+        this.value = el.getAttribute('value');
+      }
+      this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
+    }
   }
   handleSlotchange(e) {
     this._slottedChildren.forEach((el, idx) => {
@@ -256,6 +215,16 @@ export class TkButtonGroup extends LitElement {
           el.setAttribute('disabled', 'disabled');
         } else {
           el.removeAttribute('disabled');
+        }
+      });
+    }
+    if (changedProperties.has('value') && changedProperties.get('value') !== this.value) {
+      this._slottedChildren.forEach((el) => {
+        if (this.value === el.getAttribute('value')) {
+          el.setAttribute('checked', 'checked');
+          console.log(el);
+        } else {
+          el.removeAttribute('checked');
         }
       });
     }

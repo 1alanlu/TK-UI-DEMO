@@ -16,6 +16,30 @@
       <div class="bg:body">設置背景：主體色</div>
       <div class="bg:object">設置背景：物件色</div>
       <div class="bg:silence">設置背景：禁用色</div>
+      <div x-data="{ name: null, color: null, pick:false }" @keyup.k.window="pick = !pick">
+        <div>
+          <div class="flex">
+            <input type="color" x-model="color" @change="name='colorpick'" colorpick-eyedropper-active="true" />
+            <p x-text="color"></p>
+            <p class="ml:1x" x-text="name"></p>
+          </div>
+          <tk-checkbox :checked="pick" @change="pick=$event.detail.checked">
+            <div>選擇顏色：<kbd>K</kbd></div>
+          </tk-checkbox>
+        </div>
+        <div class="overflow-x:auto scrollbar">
+          <div @mouseover="if(!pick)return;name=$event.target.dataset.name;color=$event.target.dataset.color">
+            <template x-for="[key, map] in Object.entries(window.MasterCSS.config.colors).filter(([k])=>!['black', 'white'].includes(k))" :key="key">
+              <div class="flex flex:1|0|auto>*">
+                <template x-for="[index, color] in Object.entries(map).filter(([v])=>v)" :key="key+'-'+index">
+                  <span :class="'h:1x bg:'+color" :data-name="key+'-'+index" :data-color="color"></span>
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
       <h3>Interactive light theme</h3>
       <div class="flex gap:1x bg:white! bg:slate-95 bg:gray-15@dark">
         <button color="gray" class="font:12 text:center h:32 px:14 rounded font:medium capitalize bg:gray-95 bg:gray-90:hover bg:gray-85:active fg:gray-45">gray</button>

@@ -7,9 +7,8 @@
   :direction="direction"
   :draggable="direction === 'drag'"
   :class="mcssLiteral.toLine({
-    '': 'z:devPanel fg:theme bg:theme-fg shadow:0|0|10|B-50/.1 hide@<sm',
+    '': 'z:devPanel p:0x|1x fg:theme bg:theme-fg shadow:0|0|10|B-50/.1 hide@<sm',
     'transition': '~opacity|.2s opacity:.8 opacity:1:hover {opacity:0!;untouchable!}[hide]',
-    '_#devPanel-switch': 'rel p:1x pointer flex center-content',
     '[window]': mcssLiteral.toLine({
       '': 'z:0 block! rel! opacity:1 shadow:none',
       '_#devPanel-switch': 'hide',
@@ -43,22 +42,24 @@
   <input type="checkbox" :id="$id('accordion')" x-model="open" />
   <label :for="$id('accordion')">
     <!-- devPanel-switch -->
-    <div id="devPanel-switch">
-      <div class="abs left:0 flex ai:center gap:2x">
-        <tk-button shape="circle" class="ml:2x" icon="radix-icons:external-link" type="theme" @click.stop="$store.dev.open"></tk-button>
-        <tk-radio-group :value="direction" @change="direction=$event.detail.value">
-          <tk-radio class="mr:2x" value="drag"><tk-icon icon="material-symbols:drag-pan-rounded"></tk-icon></tk-radio>
-          <tk-radio value="left"><tk-icon icon="carbon:open-panel-filled-left"></tk-icon></tk-radio>
-          <tk-radio value="bottom"><tk-icon icon="carbon:open-panel-filled-bottom"></tk-icon></tk-radio>
-          <tk-radio value="right"><tk-icon icon="carbon:open-panel-filled-right"></tk-icon></tk-radio>
-        </tk-radio-group>
+    <div id="devPanel-switch" class="rel pointer flex ai:center jc:space-between flex:1>div">
+      <div class="flex ai:center gap:2x">
+        <tk-button shape="circle" icon="radix-icons:external-link" type="flat" @click.stop="$store.dev.open"></tk-button>
+        <tk-button-group ratio :value="direction" @change="direction=$event.detail.value" class="{fg:theme-fg;bg:theme}>*[checked]">
+          <tk-button value="drag" icon="material-symbols:drag-pan-rounded"></tk-button>
+          <tk-button value="left" icon="carbon:open-panel-filled-left"></tk-button>
+          <tk-button value="bottom" icon="carbon:open-panel-filled-bottom"></tk-button>
+          <tk-button value="right" icon="carbon:open-panel-filled-right"></tk-button>
+        </tk-button-group>
       </div>
       <div class="flex center-content">
         <span>儀錶板</span>
         <tk-icon type="arrow" :flag="0"></tk-icon>
       </div>
-      <div class="abs right:0 opacity:.7">
-        <tk-checkbox :checked="hide" @change="hide=$event.detail.checked"">(隱藏：<kbd>alt</kbd>+<kbd>/</kbd>)</tk-checkbox>
+      <div class="t:right">
+        <tk-checkbox class="~opacity|.2s opacity:.3 opacity:1:hover" :checked="hide" @change="hide=$event.detail.checked">
+          <div>隱藏：<kbd>alt</kbd>+<kbd>/</kbd></div>
+        </tk-checkbox>
       </div>
     </div>
     <!-- devPanel-content -->
@@ -66,7 +67,7 @@
   <div class="accordion-content">
     <div class="min-h:0">
       <div id="devPanel-content" class="overflow:auto scrollbar">
-        <div class="grid-cols:1 grid-cols:3@xs {p:1x}>section">
+        <div class="grid-cols:1 grid-cols:3@xs">
           <section>
             <div class="accordion" x-id="['accordion']">
               <input type="checkbox" :id="$id('accordion')" checked />

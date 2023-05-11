@@ -86,10 +86,10 @@
       }
     </style>
   </head>
-  <body class="normal" x-data :class="$store.darkMode.on && 'dark'">
+  <body class="normal bg:body" x-data>
     <!-- header -->
     <header
-      class="header header--fixed flex ai:center {opacity:.8;shadow:md}.header--fade"
+      class="header flex ai:center {opacity:.8;shadow:md}.header--fade"
       x-data="{
         transparentBar: function(){
           var st = window.scrollY || window.pageYOffset;

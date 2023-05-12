@@ -7,6 +7,7 @@
 
     <!-- Utils -->
     <script defer src="../../@utils/obj.js"></script>
+    <script defer src="../../@utils/dom.js"></script>
     <script defer src="../../@utils/ajax.js"></script>
     <script defer src="../../@utils/process.js"></script>
     <script defer src="../../@utils/anchor.js"></script>
@@ -15,7 +16,7 @@
     <!--<script src="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.browser.js"></script>-->
     <script defer src="../../@master/helpers.js"></script>
     <script defer src="../../@master/config.js"></script>
-    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@master/normal.css@2.0.0-beta.150/dist/index.css" />
+    <!-- <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@master/normal.css@2.0.0-beta.150/dist/index.css" /> -->
     <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs" />
     <script type="module">
       import MasterCSS, { Theme } from 'https://cdn.jsdelivr.net/npm/@master/css@2.0.0-beta.150/dist/index.mjs';
@@ -23,7 +24,7 @@
       window.mcssConfig = window.objUtil.merge(window.mcssConfig, {
         colors: {},
       });
-      window.masterCSS = new MasterCSS(window.mcssConfig);
+      window.mcss = new MasterCSS(window.mcssConfig);
       window.mcssLoaded();
     </script>
 

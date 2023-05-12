@@ -8,7 +8,7 @@ export class TkTheme extends LitElement {
   };
   constructor() {
     super();
-    this.themeKeys = Object.keys(this.themes);
+    this.themeKeys = Object.keys(TkTheme.themes);
     this.currentTheme = null;
   }
 
@@ -17,7 +17,7 @@ export class TkTheme extends LitElement {
   }
 
   // THEME_KEY = 'theme';
-  get themes() {
+  static get themes() {
     return {
       light: 'carbon:sun',
       dark: 'carbon:moon',
@@ -49,7 +49,7 @@ export class TkTheme extends LitElement {
   // ----------------------------------------------------------------
   initTheme(value) {
     this.currentTheme = value && this.themeKeys.includes(value) ? value : this.themeKeys[0];
-    this._icon = this.themes[this.currentTheme];
+    this._icon = TkTheme.themes[this.currentTheme];
     window.mcssTheme.switchAll(this.currentTheme);
 
     // localStorage.setItem(this.THEME_KEY, this.currentTheme);

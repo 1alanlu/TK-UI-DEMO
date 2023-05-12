@@ -134,6 +134,12 @@
     },
   };
 
+  const clipboard = (target) => {
+    if (typeof target === 'function') target = target();
+    if (typeof target === 'object') target = JSON.stringify(target);
+    return window.navigator.clipboard.writeText(target);
+  };
+
   return {
     isObject,
     typeOf,
@@ -145,5 +151,6 @@
     bindBreakpoint,
     mapListener,
     date,
+    clipboard,
   };
 });

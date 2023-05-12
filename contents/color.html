@@ -1,0 +1,101 @@
+<div x-data="{ name: null, color: null, lock:true }" @keyup.k.window="lock = !lock">
+  <div
+    x-data="{
+    colorItems: [
+      { key: 'primary', name: '主色', color: '' },
+      { key: 'secondary', name: '輔色', color: '' },
+      { key: 'accent', name: '強調色', color: '' },
+      { key: 'major', name: '關鍵色', color: '' },
+      { key: 'content', name: '內容色', color: '' },
+      { key: 'body', name: '主體色', color: '' },
+      { key: 'object', name: '物件色', color: '' },
+      { key: 'silence', name: '禁用色', color: '' },
+    ],
+    init(){
+      this.initColor($store.theme)
+      this.$watch('$store.theme', (theme)=>{
+        this.initColor(theme)
+      })
+    },
+    initColor(theme){
+      this.colorItems.forEach(item => {
+        item.color = mcss.colorThemesMap[item.key][theme] || mcss.colorThemesMap[item.key]['']
+      });
+    },
+    restore(){
+      // todo
+    },
+    sync(){
+      // todo
+    },
+    getColorsConfig(){
+      return this.colorItems.reduce((acc, item) => ({ ...acc, [item.key]: item.color}), {})
+    },
+    updateMCSS(){
+      window.mcssConfig = window.objUtil.merge(window.mcssConfig, {
+        themes: {
+          [this.$store.theme]:{
+            colors : this.getColorsConfig()
+          }
+        },
+      });
+      MasterCSS.instances.forEach((mcss)=>{
+        mcss.refresh(window.mcssConfig)
+      })
+    }
+  }"
+  >
+    <div class="flex ai:center jc:space-between">
+      <div class="flex ai:center">
+        <tk-button type="flat" :icon="TkTheme.themes[$store.theme]" x-text="$store.theme"></tk-button>
+        <a class="link" href="https://beta.css.master.co/docs/colors" target="_blank">
+          <tk-icon icon="radix-icons:external-link">MasterCSS-Colors</tk-icon>
+        </a>
+      </div>
+      <div class="flex ai:center">
+        <!-- <tk-button type="flat" shape="circle" icon="mdi:backup-restore" @click="restore"></tk-button> -->
+        <!-- <tk-button type="flat" shape="circle" icon="mdi:sync" @click="sync"></tk-button> -->
+        <tk-button type="flat" shape="circle" icon="mdi:content-copy" @click="objUtil.clipboard(getColorsConfig());TkMessage.success('Copied')"></tk-button>
+      </div>
+    </div>
+
+    <hr class="my:1x h:1 bg:content/.2" />
+    <template x-for="colorItem in colorItems" :key="colorItem.key">
+      <div class="my:0x grid-cols:3 gap:1x" :class="'$theme:'+colorItem.color">
+        <div class="flex flex:wrap">
+          <p x-text="colorItem.key"></p>
+          <p x-text="'('+colorItem.name+')'"></p>
+        </div>
+        <div class="flex flex:wrap ai:center">
+          <input type="color" x-model="colorItem.color" @change="updateMCSS" colorpick-eyedropper-active="true" />
+          <div class="flex flex:wrap ai:center">
+            <p x-text="colorItem.color"></p>
+          </div>
+        </div>
+        <div class="flex flex:1>div b:2 border-color:$(theme)">
+          <div class="fg:$(theme)">前景</div>
+          <div class="bg:$(theme)">背景</div>
+        </div>
+      </div>
+    </template>
+  </div>
+  <!-- <div class="flex flex:column">
+    <div class="flex">
+      <tk-checkbox :checked="lock" @change="lock=$event.detail.checked">
+        <div>鎖定(<kbd>K</kbd>)</div>
+      </tk-checkbox>
+      <input type="color" x-model="color" @change="name='colorpick'" colorpick-eyedropper-active="true" />
+      <p x-text="color"></p>
+      <p class="ml:1x" x-text="'('+name+')'"></p>
+    </div>
+    <div @mouseover="if(lock)return;name=$event.target.dataset.name;color=$event.target.dataset.color">
+      <template x-for="[key, map] in Object.entries(window.MasterCSS.config.colors).filter(([k])=>!['black', 'white'].includes(k))" :key="key">
+        <div class="flex flex:1>*">
+          <template x-for="[index, color] in Object.entries(map).filter(([v])=>v)" :key="key+'-'+index">
+            <span :class="'h:1x bg:'+color" :data-name="key+'-'+index" :data-color="color"></span>
+          </template>
+        </div>
+      </template>
+    </div>
+  </div> -->
+</div>

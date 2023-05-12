@@ -222,7 +222,6 @@ export class TkButtonGroup extends LitElement {
       this._slottedChildren.forEach((el) => {
         if (this.value === el.getAttribute('value')) {
           el.setAttribute('checked', 'checked');
-          console.log(el);
         } else {
           el.removeAttribute('checked');
         }

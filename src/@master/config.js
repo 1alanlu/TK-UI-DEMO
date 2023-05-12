@@ -35,15 +35,23 @@
     header: 45,
   };
 
-  const baseColors = {
+  const qq = {
+    primary: '#b79788',
+    secondary: '#f388c0',
+    accent: '#333333',
+    major: '#999999',
+    content: '#333333',
+    body: '#EEEEEE',
+    object: '#FEFEFE',
+    silence: '#dad9db',
+  };
+
+  const colors = {
     W: { 50: '#FFFFFF' },
     B: { 50: '#1D1D1D', 40: '#252525', 30: '#333333', 20: '#444444' },
     G: { 50: '#999999', 40: '#B2B2B2', 30: '#CBCBCB', 20: '#F2F2F2', 10: '#F8F8F8' },
     Y: { 50: '#FBC700', 20: '#FFECA0' },
-  };
 
-  const colors = {
-    ...baseColors,
     primary: 'brown-60', //主色，品牌的主要色彩
     secondary: 'pink-70', //輔色，品牌的輔助色彩
     accent: '#333333', //強調色，強調目前作用中的連結及狀態，和背景形成強烈對比
@@ -67,13 +75,18 @@
   };
 
   const themes = {
-    light: {},
+    light: {
+      colors: {},
+    },
     dark: {
       colors: {
-        primary: '#333333',
-        accent: '#333333',
+        primary: 'brown-10',
+        secondary: 'pink-20',
+        accent: '#EEEEEE',
         major: 'gray-80',
-        content: '#0c0c0c',
+        body: '#777777',
+        object: '#333333',
+        content: '#FEFEFE',
 
         // TODO: 改成上面的顏色
         theme: { '': '#333333', fg: '#EEEEEE' },
@@ -169,7 +182,7 @@
         '_:where(table)': 'text-indent:0 border-color:inherit',
         '_:where(summary)': 'display:list-item',
         '_:where(progress)': 'v:baseline',
-        '_:where(kbd)': 'mx:0x p:0x r:0x f:80% fg:B-30 bg:W-50 b:1|solid|B-30/.5 shadow:sm',
+        '_:where(kbd)': 'mx:0x p:0x r:0x f:80% fg:content bg:object b:1|solid|content/.5 shadow:sm',
         // '::-moz-focus-inner': 'border-style:none p:0',
         // '::-moz-ui-invalid': 'box-shadow:none',
         // '::-webkit-inner-spin-button,::-webkit-outer-spin-button': 'h:auto',
@@ -195,7 +208,7 @@
         '': 'z:header top:0 w:full h:header bg:primary header--fixed',
         transition: '~.2s opacity:1!:hover',
         '@<sm': 'fixed {mt:header}+*_$',
-      },true),
+      }),
       '-fixed': literal.toLine({
         '': 'fixed!',
         '+*': 'mt:header',
@@ -244,20 +257,22 @@
         box:border
         my:2x p:2x|3x
         r:1x overflow:hidden
-        bg:bg-box
+        fg:content bg:object
         shadow:lg
+        mt:-2x:not([hide])+[hide]
+        ~.2s {my:0;py:0;opacity:0;max-h:0;invisible}[hide]
       `,
     },
     // 按鈕
     btn: {
-      '': literal.$`
+      '': literal.$`k
         box:border rel overflow:hidden
         inline-flex center-content gap:1x
         p:0x|1x r:inherit w:inherit h:inherit
         f:inherit fg:$(fg,inherit) bg:$(bg,inherit)
         t:center vertical-align:middle
         text-transform:inherit text:none white-space:nowrap
-        b:1|solid|$(border,${baseColors['G'][50]})
+        b:1|solid|$(border,${colors['G'][50]})
         ~.2s transition-property:color,background,border-color,box-shadow
         pointer outline:none
         pointer-events:all
@@ -465,6 +480,51 @@
           spin mr:0.5em
         `,
       }),
+    },
+    modal: {
+      '': literal.$`
+        z:modal
+        flex fixed middle center
+        p:1x
+        overflow-x:hidden overflow-y:auto outline:none
+        bg:B-50/.3
+        opacity:0 invisible
+        ~.2s|ease-out transition-property:opacity,visibility
+        {opacity:1;visible}[open]
+      `,
+      close: literal.$`
+        abs top:0 right:0 flex
+        w:2x h:2x f:3x font-family:none
+      `,
+      dialog: {
+        '': literal.$`
+          flex m:auto p:2x r:0x
+          min-w:3xs@2xs
+          w:full@<2xs
+          bg:bg-box
+          shadow:xl
+          transition-property:opacity,transform
+          ~.2s|cubic-bezier(.645,.045,.355,1)
+          opacity:0 scale(.5)
+          [open]_{opacity:1;scale(1)}
+          [open].modal--static>{scale(1.02)}
+        `,
+        type: literal.$`
+          hide f:30 {block;mr:1x}[icon]
+        `,
+        content: literal.$`
+          rel w:full
+        `,
+        title: literal.$`
+          mb:1x f:24 f:bolder lh:1.2 user-select:none
+        `,
+        body: literal.$`
+          min-h:50 overflow:auto
+        `,
+        footer: literal.$`
+          mt:1x t:right user-select:none
+        `,
+      },
     },
     // 旋轉
     spin: '@rotate|1s|linear|infinite',

@@ -8,6 +8,7 @@
 
     <!-- Utils -->
     <script defer src="./src/@utils/obj.js"></script>
+    <script defer src="./src/@utils/dom.js"></script>
     <script defer src="./src/@utils/ajax.js"></script>
     <script defer src="./src/@utils/process.js"></script>
     <script defer src="./src/@utils/anchor.js"></script>
@@ -54,7 +55,8 @@
           search: '',
           sections: {},
           loading: { sections: null },
-          async init() {
+          init() {
+            this.$store.theme = mcssTheme.current;
             this.$watch('search', (search) => {
               Object.entries(this.sections).forEach(([section, settings]) => {
                 settings.hide = !section.includes(search.toLowerCase());
@@ -65,23 +67,50 @@
               this.$store.dev.panel(window.ajaxUtil.url.domain + '/src/@alpine/template/devPanel.html');
             }
 
-            await this.initSections();
+            this.initSections();
           },
           async initSections() {
-            this.loading.sections = true;
             const result = window.ajaxUtil.get({ url: window.ajaxUtil.url.domain + '/data/sections.json' });
-            const delay = new Promise((r) => setTimeout(r, 1000));
+            const delay = new Promise((r) => setTimeout(r, 200));
             const [[error, res]] = await Promise.all([result, delay]);
             if (error || !res) return;
 
-            this.sections = res;
-            const sections = await Promise.allSettled(Object.keys(this.sections).map((key) => window.ajaxUtil.getText(`${window.ajaxUtil.url.domain}/sections/${key}.html`)));
-            sections.forEach((section) => {
-              if (section.status != 'fulfilled') return;
-              window.ajaxUtil.setTemplate(this.$refs.sections, section.value);
+            this.sections = Object.fromEntries(Object.entries(res).map(([key, val]) => [key, { ...val, init: false }]));
+
+            Object.keys(this.sections).map(async (key) => {
+              const content = await window.ajaxUtil.getText(`${window.ajaxUtil.url.domain}/contents/${key}.html`);
+              const html = `
+                <section class="accordion card"
+                  x-id="['accordion']"
+                  x-data="{
+                    key: '${key}',
+                    get config(){
+                      return this.sections[this.key]
+                    },
+                    shown: false,
+                  }"
+                  x-init="$nextTick(()=>config.init=true)"
+                  :hide="!config.init || config.hide"
+                >
+                  <input type="checkbox" :id="$id('accordion')" x-model="config.open" />
+                  <label class="accordion-title" :for="$id('accordion')" x-text="key"></label>
+                  <div class="accordion-content">
+                    <div class="min-h:0">
+                      ${content}
+                    </div>
+                  </div>
+                </section>
+              `;
+              console.log(key);
+              window.domUtil.setTemplate(this.$refs.sections, html);
             });
-            this.$refs.sections.style.opacity = 1;
-            window.TkMessage.success('Sections loaded.');
+
+            // const sections = await Promise.allSettled(Object.keys(this.sections).map((key) => window.ajaxUtil.getText(`${window.ajaxUtil.url.domain}/contents/${key}.html`)));
+            // sections.forEach((section) => {
+            //   if (section.status != 'fulfilled') return;
+            //   window.domUtil.setTemplate(this.$refs.sections, section.value);
+            // });
+
             this.loading.sections = false;
           },
         };
@@ -146,7 +175,7 @@
             <tk-button type="theme" shape="circle" icon="ph:github-logo" href="https://github.com/zhongyoulu/TK-UI-DEMO"></tk-button>
             <tk-button type="theme" shape="circle" icon="ph:codesandbox-logo" href="https://codesandbox.io/s/github/zhongyoulu/TK-UI-DEOM"></tk-button>
           </div>
-          <tk-theme class="ml:2x ml:1x@<2xs" @click.stop @theme="window.TkMessage.success('theme: ' + $event.detail.current)"></tk-theme>
+          <tk-theme class="ml:2x ml:1x@<2xs" @click.stop @theme="$store.theme=$event.detail.current"></tk-theme>
         </div>
       </div>
     </header>
@@ -158,7 +187,7 @@
           <div class="abs-center-x top:5x" x-init="$watch('loading.sections',(loading)=>$el.classList.toggle('hide', !loading))">
             <div class="loader fg:theme f:20">Loading...</div>
           </div>
-          <div x-ref="sections" class="opacity:0 ~opacity|.2s"></div>
+          <div x-ref="sections"></div>
         </div>
       </div>
       <!-- Footer -->

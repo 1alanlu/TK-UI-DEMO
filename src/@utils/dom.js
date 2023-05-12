@@ -78,6 +78,22 @@
     return node;
   }
 
+  function setTemplate(wrap, template, js = false, style = true) {
+    const html = new DOMParser().parseFromString(template, 'text/html');
+    if (js) {
+      const scripts = html.head.querySelectorAll('script');
+      scripts.forEach((script) => wrap.append(script));
+    }
+    if (style) {
+      const styles = html.head.querySelectorAll('style, link');
+      styles.forEach((style) => wrap.append(style));
+    }
+    const components = html.body.childNodes;
+    [...components].forEach((component) => {
+      wrap.appendChild(component);
+    });
+  }
+
   return {
     createElem,
     cloneElem,
@@ -92,5 +108,6 @@
     loadStyleSheet,
     loadScript,
     nodeScriptReplace,
+    setTemplate,
   };
 });

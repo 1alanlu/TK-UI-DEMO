@@ -1,9 +1,7 @@
 {
-  "color": { "open": false, "hide": false },
   "tk-icon": { "open": false, "hide": false },
   "tk-button": { "open": false, "hide": false },
   "tk-countdown": { "open": false, "hide": false },
   "tk-media": { "open": false, "hide": false },
-  "list": { "open": false, "hide": false },
-  "cart": { "open": false, "hide": false }
+  "list": { "open": false, "hide": false }
 }

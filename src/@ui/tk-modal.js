@@ -1,54 +1,5 @@
 import { LitElement, html, css, classMap, unsafeCSS, nothing, map, ref, createRef } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.7.3/all/lit-all.min.js';
 
-const mcssLiteral = window.mcssLiteral;
-const cls = {
-  modal: {
-    '': mcssLiteral.$`
-      z:modal
-      flex fixed middle center
-      p:1x
-      overflow-x:hidden overflow-y:auto outline:none
-      bg:B-50/.3
-      opacity:0 invisible
-      ~.2s|ease-out transition-property:opacity,visibility
-      {opacity:1;visible}[open]
-    `,
-    dialog: mcssLiteral.$`
-      flex m:auto p:2x r:0x
-      min-w:3xs@2xs
-      w:full@<2xs
-      bg:bg-box
-      shadow:xl
-      transition-property:opacity,transform
-      ~.2s|cubic-bezier(.645,.045,.355,1)
-      opacity:0 scale(.5)
-      [open]_{opacity:1;scale(1)}
-      [open].modal--static>{scale(1.02)}
-    `,
-    close: mcssLiteral.$`
-      abs top:0 right:0 flex
-      w:2x h:2x f:3x font-family:none
-    `,
-  },
-  dialog: {
-    type: mcssLiteral.$`
-      hide f:30 {block;mr:1x}[icon]
-    `,
-    content: mcssLiteral.$`
-      rel w:full
-    `,
-    title: mcssLiteral.$`
-      mb:1x f:24 f:bolder lh:1.2 user-select:none
-    `,
-    body: mcssLiteral.$`
-      min-h:50 overflow:auto
-    `,
-    footer: mcssLiteral.$`
-      mt:1x t:right user-select:none
-    `,
-  },
-};
-
 // 已開啟彈窗
 const opened = [];
 
@@ -123,12 +74,12 @@ export class TkModal extends LitElement {
       <div ${ref(this.modalRef)} class="modal normal ${unsafeCSS(this.cls || '')}" tabindex="-1" ?open=${this._open} aria-hidden="${!this.open}" @mousedown=${this._backdropClose}>
         <div class="modal-dialog">
           <tk-icon class=${classMap({ 'dialog-type': true, ['fg:' + color]: color })} .icon=${icon}></tk-icon>
-          <div class="dialog-content">
+          <div class="modal-dialog-content">
             <tk-button class="modal-close" type="font" @click=${this._close}>&times;</tk-button>
-            <div class="dialog-title">
+            <div class="modal-dialog-title">
               <slot name="title">${title || 'Dialog'}</slot>
             </div>
-            <div class="dialog-body">
+            <div class="modal-dialog-body">
               <slot></slot>
               ${this.showInput
                 ? html`
@@ -138,7 +89,7 @@ export class TkModal extends LitElement {
                   `
                 : null}
             </div>
-            <div class="dialog-footer">
+            <div class="modal-dialog-footer">
               ${this.showCancel ? html`<tk-button class="btn-cancel" @click=${this._cancel}>${this.cancelText}</tk-button>` : null}
               <tk-button ${ref(this.submitRef)} class="btn-submit" type="theme" ?loading=${this.loading} @click=${this._submit}>${this.okText}</tk-button>
             </div>
@@ -155,7 +106,7 @@ export class TkModal extends LitElement {
     if (this.portal && this.portal !== this.parentNode) this.portal.appendChild(this);
 
     this.css = new MasterCSS({
-      ...window.objUtil.merge(window.mcssConfig, { classes: cls }),
+      ...window.mcssConfig,
       themeDriver: 'host',
       observe: false,
     }).observe(this.shadowRoot);

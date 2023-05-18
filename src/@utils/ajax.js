@@ -67,7 +67,8 @@
 
     try {
       const [error, res] = await safeAwait(fetch(url, opts));
-      return [error, await res.json()];
+      result = [error, await res.json()];
+      return result;
     } catch (error) {
       autoCatchMsg && window.TkMessage && window.TkMessage.error(error.message);
       console.error(error);

@@ -18,6 +18,7 @@ const cls = {
       ~.2s transition-property:opacity,visibility
       .skeleton-pseudo_{opacity:0;invisible}
       hide[hide]
+      opacity:0:not([src])
     `,
   },
 };
@@ -177,7 +178,7 @@ export default class TkMedia extends LitElement {
     if (changedProperties.has('imgSrc') && this.imgSrc) {
       imgSrc = this.imgSrc;
     }
-    if ((changedProperties.has('videoSrc') && this.videoSrc) || !this.imgSrc) {
+    if ((changedProperties.has('videoSrc') || !this.imgSrc) && this.videoSrc) {
       this._loadingVideo = false;
       this._ytID = this.getYtID(this.videoSrc);
       this._coverSrc = `https://i.ytimg.com/vi/${this._ytID}/hqdefault.jpg`;

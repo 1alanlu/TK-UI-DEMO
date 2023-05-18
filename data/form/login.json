@@ -31,19 +31,18 @@
     "name": "驗證碼",
     "icon": "material-symbols:verified-user",
     "attrs": {
-      "type": "text",
+      "type": "tel",
       "autocomplete": "off",
       "title": "請輸入右方驗證碼",
       "placeholder": "請輸入右方驗證碼",
       "required": true,
       "pattern": "[0-9]{6}",
-      "inputmode": "numeric",
       "maxlength": 6
     },
     "msg": {
       "pattern": "請輸入6碼數字"
     },
     "wrapCls": "flex ai:center min-w:82 w:150",
-    "html": "<tk-media ratio='82/25' title='驗證碼' x-ref='verify' x-on:click='$refs.verify.img+=1' :img='window.ajaxUtil.url.domain+\"/verify/VerifyCode.aspx?\"'></tk-media>"
+    "html": "<tk-media ratio='82/25' title='驗證碼' x-data='{img:window.ajaxUtil.url.domain+`/verify/VerifyCode.aspx?`}' x-on:click='img+=1' x-bind:img='img'></tk-media>"
   }
 }
